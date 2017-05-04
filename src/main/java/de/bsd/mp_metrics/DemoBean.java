@@ -16,13 +16,14 @@
  */
 package de.bsd.mp_metrics;
 
-import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import org.jboss.logging.Logger;
 
 /**
+ * An example application that has a metric registered and is exposing it now.
  * @author hrupp
  */
 @Path("/demo")
@@ -43,7 +44,10 @@ public class DemoBean {
 
   @GET
   @Path("/count")
-  public int count() {
-    return (int) applicationMetric.getValue("demo");
+  @Produces("application/json")
+  public String count() {
+    Number number = applicationMetric.getValue("demo");
+    long value = number.longValue();
+    return "{\"demo\":" + value + "}";
   }
 }

@@ -24,8 +24,8 @@ import javax.ws.rs.Produces;
 @Produces("application/json")
 public class MpMetricsWorker {
 
-    private static final String[] bases = {"base","vendor"};
     private static final String APPLICATION = "application";
+    private static final String[] bases = {"base","vendor", APPLICATION};
     MBeanServer mbs;
 
     @Inject
@@ -41,7 +41,6 @@ public class MpMetricsWorker {
         for (String subTree : bases) {
             results.put(subTree, getValuesForSubTree(subTree));
         }
-        results.put("application", getAppValues());
         return results;
     }
 
@@ -50,15 +49,7 @@ public class MpMetricsWorker {
     public Map<String, Number> getBaseValues(@PathParam("sub")String sub) {
 
         validateSub(sub);
-
-        if (sub.equals(APPLICATION)) {
-            return getAppValues();
-        }
         return getValuesForSubTree(sub);
-    }
-
-    private Map<String, Number> getAppValues() {
-        return applicationMetric.getAll();
     }
 
 
@@ -72,7 +63,12 @@ public class MpMetricsWorker {
         for (MetadataEntry entry : metadata) {
             if (entry.getName().equals(field)) {
 
-                Number value = getValue(entry.getMbean());
+                Number value;
+                if (APPLICATION.equals(sub)) {
+                    value = applicationMetric.getValue(field);
+                } else {
+                    value = getValue(entry.getMbean());
+                }
                 results.put(entry.getName(), value);
 
                 return results;
@@ -95,7 +91,7 @@ public class MpMetricsWorker {
     }
 
     private List<MetadataEntry> getAppMetadata() {
-        return new ArrayList<>(applicationMetric.getAllMetaData().values());
+        return applicationMetric.getMetadataList();
     }
 
     @OPTIONS
@@ -103,19 +99,30 @@ public class MpMetricsWorker {
     public List<MetadataEntry> getMetadataForSubTree(@PathParam("sub")String sub) {
 
         validateSub(sub);
-        List<MetadataEntry> metadata = ConfigHolder.getInstance().getConfig().get(sub);
+        List<MetadataEntry> metadata;
+        if (APPLICATION.equals(sub)) {
+            metadata = getAppMetadata();
+        } else {
+            metadata = ConfigHolder.getInstance().getConfig().get(sub);
+        }
         return metadata;
     }
 
     private Map<String, Number> getValuesForSubTree(String sub) {
         List<MetadataEntry> metadata = ConfigHolder.getInstance().getConfig().get(sub);
-
         Map<String,Number> results = new HashMap<>(metadata.size());
-        for (MetadataEntry entry : metadata) {
-            Number value = getValue(entry.getMbean());
-            results.put(entry.getName(),value);
-        }
 
+        for (MetadataEntry entry : metadata) {
+            Number value;
+            String key = entry.getName();
+            if (APPLICATION.equals(sub)) {
+                value = applicationMetric.getValue(key);
+            }
+            else {
+                value = getValue(entry.getMbean());
+            }
+            results.put(key, value);
+        }
         return results;
     }
 
@@ -125,7 +132,6 @@ public class MpMetricsWorker {
      * @return
      */
     private Number getValue(String mbeanExpression) {
-
 
         if (!mbeanExpression.contains("/")) {
             throw new NotFoundException(mbeanExpression);
@@ -167,9 +173,9 @@ public class MpMetricsWorker {
             if (sub.equals(item)) {
                 found=true;
             }
-            if (APPLICATION.equals(item)) {
-                found=true;
-            }
+        }
+        if (APPLICATION.equals(sub)) {
+            found=true;
         }
         if (!found) {
             throw new NotFoundException(sub);

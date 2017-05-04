@@ -17,7 +17,9 @@
 package de.bsd.mp_metrics;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -38,6 +40,7 @@ public class ApplicationMetric implements Serializable {
 
   public void registerMetric(String key, MetadataEntry theData) {
     this.metadata.put(key,theData);
+    this.values.put(key,0);
 
   }
 
@@ -83,4 +86,7 @@ public class ApplicationMetric implements Serializable {
   }
 
 
+  public List<MetadataEntry> getMetadataList() {
+    return new ArrayList<>(metadata.values());
+  }
 }

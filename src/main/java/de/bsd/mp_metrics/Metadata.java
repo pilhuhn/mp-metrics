@@ -52,10 +52,7 @@ public class Metadata {
   }
 
   public List<MetadataEntry> getApplication() {
-    if (application==null) {
-      application = new ArrayList<>(1);
-    }
-    return application;
+    return ApplicationMetric.getInstance().getMetadataList();
   }
 
   public List<MetadataEntry> get(String domain) {
@@ -65,9 +62,5 @@ public class Metadata {
       case "application" : return getApplication();
     }
     return Collections.emptyList();
-  }
-
-  public void setApplication(List<MetadataEntry> application) {
-    this.application = application;
   }
 }

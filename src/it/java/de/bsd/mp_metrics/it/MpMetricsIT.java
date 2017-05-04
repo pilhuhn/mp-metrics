@@ -18,12 +18,11 @@ package de.bsd.mp_metrics.it;
 
 import static io.restassured.RestAssured.when;
 import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.core.Is.is;
 
 import de.bsd.mp_metrics.Main;
 import io.restassured.RestAssured;
-import org.hamcrest.core.IsEqual;
+import java.util.Map;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.Arquillian;
@@ -54,12 +53,28 @@ public class MpMetricsIT  {
         .statusCode(404);
   }
 
+  @Test
+  public void testListsAll() {
+    when().get("http://localhost:8080/metrics")
+        .then()
+        .statusCode(200)
+        .and().contentType("application/json");
+
+    Map response = when().get("http://localhost:8080/metrics")
+        .as(Map.class);
+
+    assert response.containsKey("base");
+    assert response.containsKey("vendor");
+    assert response.containsKey("application");
+  }
+
 
   @Test
   public void testBase() {
     when().get("http://localhost:8080/metrics/base")
         .then()
-        .contentType("application/json")
+        .statusCode(200)
+        .and().contentType("application/json")
         .and()
         .body(containsString("total-started-thread-count"));
   }
@@ -80,8 +95,64 @@ public class MpMetricsIT  {
   @Test
   public void testVendorMetadata() {
     RestAssured.options("http://localhost:8080/metrics/vendor")
-        .then().contentType("application/json")
-        .and().statusCode(200)
+        .then().statusCode(200)
+        .and().contentType("application/json")
         .and().body("[0].name", is("msc-loaded-modules"));
   }
+
+  @Test
+  public void testApplicationMetadata() {
+    RestAssured.options("http://localhost:8080/metrics/application")
+        .then().statusCode(200)
+        .and().contentType("application/json")
+        .and().body("[0].name", is("demo"));
+  }
+
+  @Test
+  public void testApplicationsData() {
+    when().get("http://localhost:8080/metrics/application")
+        .then().statusCode(200)
+        .and().contentType("application/json")
+        .and()
+        .body(containsString("demo"));
+
+  }
+
+  @Test
+  public void testApplicationsDataDemo() {
+    // Get the counter
+    int count = when().get("http://localhost:8080/demo/count")
+        .then().statusCode(200)
+        .extract().path("demo");
+
+
+    when().get("http://localhost:8080/metrics/application/demo")
+        .then().statusCode(200)
+        .and().contentType("application/json")
+        .and()
+        .body(containsString("\"demo\":"+count));
+  }
+
+  @Test
+  public void testApplicationsDataDemo2() {
+
+    // Get the counter
+    int count = when().get("http://localhost:8080/demo/count")
+        .then().statusCode(200)
+        .extract().path("demo");
+
+    // Call hello world to bump the counter
+    when().get("http://localhost:8080/demo/hello")
+        .then().statusCode(200);
+    count++;
+
+
+    // Compare with what we got from the metrics api
+    when().get("http://localhost:8080/metrics/application/demo")
+        .then().statusCode(200)
+        .and().contentType("application/json")
+        .and()
+        .body(containsString("\"demo\":"+count));
+  }
+
 }
