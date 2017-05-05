@@ -16,12 +16,8 @@
  */
 package de.bsd.mp_metrics;
 
-import java.io.File;
 import java.util.Arrays;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.Asset;
-import org.jboss.shrinkwrap.api.asset.ClassLoaderAsset;
-import org.jboss.shrinkwrap.api.exporter.ZipExporter;
 import org.wildfly.swarm.Swarm;
 import org.wildfly.swarm.jaxrs.JAXRSArchive;
 
@@ -58,9 +54,7 @@ public class Main {
     deployment.addClass(ConfigReader.class);
     deployment.addClass(Metadata.class);
     deployment.addClass(MetadataEntry.class);
-
-    deployment.addClass(ApplicationMetric.class);
-    deployment.addClass(AppDataMBean.class);
+    deployment.addClass(ApplicationMetrics.class);
 
 
     deployment.addClass(DemoBean.class);
