@@ -23,18 +23,19 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * Holder for application metrics
  * @author hrupp
  */
-public class ApplicationMetric implements Serializable {
+public class ApplicationMetrics implements Serializable {
 
   private Map<String,Number> values = new HashMap<>();
   private Map<String,MetadataEntry> metadata = new HashMap<>();
-  private static final ApplicationMetric theInstance = new ApplicationMetric();
+  private static final ApplicationMetrics theInstance = new ApplicationMetrics();
 
-  private ApplicationMetric() {
+  private ApplicationMetrics() {
   }
 
-  public static ApplicationMetric getInstance() {
+  public static ApplicationMetrics getInstance() {
     return theInstance;
   }
 

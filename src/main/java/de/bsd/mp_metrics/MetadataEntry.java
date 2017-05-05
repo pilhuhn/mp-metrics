@@ -16,16 +16,21 @@
  */
 package de.bsd.mp_metrics;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 /**
  * @author hrupp
  */
 public class MetadataEntry {
   private String name;
   private String displayName;
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private String mbean;
   private String description;
   private String type;
   private String unit;
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private String tags;
 
   public MetadataEntry() {
   }
@@ -36,6 +41,15 @@ public class MetadataEntry {
     this.description = description;
     this.type = type;
     this.unit = unit;
+  }
+
+  public MetadataEntry(String name, String displayName, String description, String type, String unit, String tags) {
+    this.name = name;
+    this.displayName = displayName;
+    this.description = description;
+    this.type = type;
+    this.unit = unit;
+    this.tags = tags;
   }
 
   public String getName() {
@@ -89,6 +103,19 @@ public class MetadataEntry {
     this.unit = unit;
   }
 
+  public String getTags() {
+    String globalTags = System.getenv("MP_METRICS_TAGS");
+    if (globalTags!=null && !globalTags.isEmpty()) {
+      return tags + "," + globalTags;
+    } else {
+      return tags;
+    }
+  }
+
+  public void setTags(String tags) {
+    this.tags = tags;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
@@ -118,6 +145,7 @@ public class MetadataEntry {
     sb.append(", mbean='").append(mbean).append('\'');
     sb.append(", type='").append(type).append('\'');
     sb.append(", unit='").append(unit).append('\'');
+    sb.append(", tags='").append(tags).append('\'');
     sb.append('}');
     return sb.toString();
   }

@@ -30,7 +30,7 @@ import org.jboss.logging.Logger;
 public class DemoBean {
 
   @Inject
-  ApplicationMetric applicationMetric;
+  ApplicationMetrics applicationMetric;
 
   Logger log = Logger.getLogger(this.getClass().getName());
 

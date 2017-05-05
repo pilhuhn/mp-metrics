@@ -52,7 +52,7 @@ public class Metadata {
   }
 
   public List<MetadataEntry> getApplication() {
-    return ApplicationMetric.getInstance().getMetadataList();
+    return ApplicationMetrics.getInstance().getMetadataList();
   }
 
   public List<MetadataEntry> get(String domain) {

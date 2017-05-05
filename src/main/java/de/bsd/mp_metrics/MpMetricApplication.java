@@ -1,17 +1,9 @@
 package de.bsd.mp_metrics;
 
 import java.io.InputStream;
-import java.lang.management.ManagementFactory;
 import java.net.URL;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
-import javax.inject.Inject;
-import javax.management.InstanceAlreadyExistsException;
-import javax.management.MBeanException;
-import javax.management.MBeanServer;
-import javax.management.NotCompliantMBeanException;
-import javax.management.ObjectName;
-import javax.management.ReflectionException;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 import org.jboss.logging.Logger;
@@ -51,8 +43,9 @@ public class MpMetricApplication extends Application {
 
 
         // Register Metrics for our DemoBean
-        ApplicationMetric applicationMetric = ApplicationMetric.getInstance();
+        ApplicationMetrics applicationMetric = ApplicationMetrics.getInstance();
         MetadataEntry demoEntry = new MetadataEntry("demo",null,"Just a demo value","gauge","none");
+        demoEntry.setTags("app=demo");
         applicationMetric.registerMetric("demo", demoEntry);
 
     }
@@ -60,8 +53,8 @@ public class MpMetricApplication extends Application {
 
     // Expose the app (meta data holder to applications)
     @Produces
-    public ApplicationMetric setupApplicationMetrics() {
-        return ApplicationMetric.getInstance();
+    public ApplicationMetrics setupApplicationMetrics() {
+        return ApplicationMetrics.getInstance();
     }
 
 

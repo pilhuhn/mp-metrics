@@ -1,7 +1,6 @@
 package de.bsd.mp_metrics;
 
 import java.lang.management.ManagementFactory;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +28,7 @@ public class MpMetricsWorker {
     MBeanServer mbs;
 
     @Inject
-    ApplicationMetric applicationMetric;
+    ApplicationMetrics applicationMetric;
 
     public MpMetricsWorker() {
         mbs = ManagementFactory.getPlatformMBeanServer();

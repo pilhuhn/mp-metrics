@@ -105,7 +105,9 @@ public class MpMetricsIT  {
     RestAssured.options("http://localhost:8080/metrics/application")
         .then().statusCode(200)
         .and().contentType("application/json")
-        .and().body("[0].name", is("demo"));
+        .and().body("[0].name", is("demo"))
+        .and().body("[0].tags", containsString("app=demo"))
+    ;
   }
 
   @Test
