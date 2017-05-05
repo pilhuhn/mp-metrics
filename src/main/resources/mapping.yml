@@ -18,7 +18,7 @@ base:
   - name: "max-heap"
     mbean: "java.lang:type=Memory/HeapMemoryUsage#max"
     description: "Number of threads started for this server"
-    unit: "bytes"
+    unit: "byte"
     type: "counter"
 
 vendor:

@@ -23,34 +23,35 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  * Bean holding the metadata of one single metric
  * @author hrupp
  */
+@SuppressWarnings("unused")
 public class MetadataEntry {
   private String name;
   private String displayName;
   @JsonIgnore
   private String mbean;
   private String description;
-  private String type;
-  private String unit;
+  private MpMType type;
+  private MpMUnit unit;
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String tags;
 
   public MetadataEntry() {
   }
 
-  public MetadataEntry(String name, String displayName, String description, String type, String unit) {
+  public MetadataEntry(String name, String displayName, String description, MpMType type, MpMUnit unit) {
     this.name = name;
     this.displayName = displayName;
     this.description = description;
     this.type = type;
-    this.unit = unit;
+    this.unit = unit; // .toString();
   }
 
-  public MetadataEntry(String name, String displayName, String description, String type, String unit, String tags) {
+  public MetadataEntry(String name, String displayName, String description, MpMType type, MpMUnit unit, String tags) {
     this.name = name;
     this.displayName = displayName;
     this.description = description;
     this.type = type;
-    this.unit = unit;
+    this.unit = unit; // .toString();
     this.tags = tags;
   }
 
@@ -90,19 +91,19 @@ public class MetadataEntry {
   }
 
   public String getType() {
-    return type;
+    return type.toString();
   }
 
   public void setType(String type) {
-    this.type = type;
+    this.type = MpMType.from(type);
   }
 
   public String getUnit() {
-    return unit;
+    return unit.toString();
   }
 
   public void setUnit(String unit) {
-    this.unit = unit;
+    this.unit = MpMUnit.from(unit);
   }
 
   public String getTags() {

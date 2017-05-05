@@ -55,6 +55,8 @@ public class Main {
     deployment.addClass(Metadata.class);
     deployment.addClass(MetadataEntry.class);
     deployment.addClass(ApplicationMetrics.class);
+    deployment.addClass(MpMUnit.class);
+    deployment.addClass(MpMType.class);
 
 
     deployment.addClass(DemoBean.class);
