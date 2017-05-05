@@ -1,0 +1,81 @@
+= MP Metrics sample
+
+This repo contains a sample of how the http://microprofile.io/[Eclipse Microprofile] spec apis could look like.
+There is no spec yet and this sample is for illustration purposes.
+
+== Building
+
+----
+$ mvn install
+----
+
+This will build the app and run on WildFly Swarm.
+
+Tests in `src/it/java/de/bsd/mp_metrics/it/MpMetricsIT` are then run against that Swarm instance
+
+== Running
+
+----
+$ java -jar target/mp-metrics-swarm.jar -Dmapping=src/main/resources/mapping.yml
+----
+
+=== Obtaining data via the REST-Interface
+
+.Retrieving all metrics
+----
+$ curl -i -X GET localhost:8080/metrics/
+HTTP/1.1 200 OK
+Connection: keep-alive
+Content-Type: application/json
+Content-Length: 166
+Date: Fri, 05 May 2017 09:26:01 GMT
+
+{
+  "application":{"demo":0},
+  "vendor":{"msc-loaded-modules":244},
+  "base":{"peak-thread-count":62,
+          "max-heap":3817865216,
+          "thread-count":39,
+          "total-started-thread-count":69}}
+----
+
+
+
+.Retrieving only application specific metrics
+----
+$ curl -i -X GET localhost:8080/metrics/application
+HTTP/1.1 200 OK
+Connection: keep-alive
+Content-Type: application/json
+Content-Length: 10
+Date: Fri, 05 May 2017 09:27:44 GMT
+
+{"demo":0}
+----
+
+.Retrieving vendor-specific meta data
+----
+$ curl -i -X OPTIONS localhost:8080/metrics/vendor
+HTTP/1.1 200 OK
+Connection: keep-alive
+Content-Type: application/json
+Content-Length: 220
+Date: Fri, 05 May 2017 09:28:32 GMT
+
+[
+  {"name":"msc-loaded-modules",
+  "displayName":"msc-loaded-modules",
+  "mbean":"jboss.modules:type=ModuleLoader,name=BootModuleLoader-2/LoadedModuleCount",
+  "description":"Number of loaded modules",
+  "type":"gauge",
+  "unit":"none"
+ }
+]
+----
+
+
+== Using in Applications
+
+`DemoBean` is showing how to submit metrical values in application code.
+These are registered, in `MpMetricApplication#registerMetricsForDemoBean` which is the Jax-RS `Application` class
+for the entire application.

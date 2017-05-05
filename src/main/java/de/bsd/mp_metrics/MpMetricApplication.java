@@ -40,14 +40,17 @@ public class MpMetricApplication extends Application {
             config = cr.readConfig(mappingFile);
         }
         ConfigHolder.getInstance().setConfig(config);
+        registerMetricsForDemoBean();
 
 
+    }
+
+    private void registerMetricsForDemoBean() {
         // Register Metrics for our DemoBean
         ApplicationMetrics applicationMetric = ApplicationMetrics.getInstance();
-        MetadataEntry demoEntry = new MetadataEntry("demo",null,"Just a demo value","gauge","none");
+        MetadataEntry demoEntry = new MetadataEntry("demo", null, "Just a demo value", "gauge", "none");
         demoEntry.setTags("app=demo");
         applicationMetric.registerMetric("demo", demoEntry);
-
     }
 
 
