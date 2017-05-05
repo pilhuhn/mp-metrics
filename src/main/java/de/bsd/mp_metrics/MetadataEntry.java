@@ -16,15 +16,17 @@
  */
 package de.bsd.mp_metrics;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 /**
+ * Bean holding the metadata of one single metric
  * @author hrupp
  */
 public class MetadataEntry {
   private String name;
   private String displayName;
-  @JsonInclude(JsonInclude.Include.NON_NULL)
+  @JsonIgnore
   private String mbean;
   private String description;
   private String type;
