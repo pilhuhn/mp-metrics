@@ -20,7 +20,7 @@ import static io.restassured.RestAssured.when;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.core.Is.is;
 
-import de.bsd.mp_metrics.Main;
+import de.bsd.mp_metrics.impl.Main;
 import io.restassured.RestAssured;
 import java.util.Map;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -42,7 +42,7 @@ public class MpMetricsIT  {
   @Deployment
   public static Archive createDeployment() throws Exception {
     JAXRSArchive deployment = Main.getJaxrsArchive();
-    deployment.addAsResource(new ClassLoaderAsset("mapping.yml"), "de/bsd/mp_metrics/mapping.yml");
+    deployment.addAsResource(new ClassLoaderAsset("de/bsd/mp_metrics/mapping.yml"), "de/bsd/mp_metrics/mapping.yml");
     return  deployment;
   }
 

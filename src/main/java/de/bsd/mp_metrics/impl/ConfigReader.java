@@ -14,8 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.bsd.mp_metrics;
+package de.bsd.mp_metrics.impl;
 
+import de.bsd.mp_metrics.Metadata;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -30,7 +31,7 @@ public class ConfigReader {
   Logger log = Logger.getLogger(this.getClass().getName());
 
 
-  Metadata readConfig(String mappingFile) {
+  public Metadata readConfig(String mappingFile) {
     try {
 
 
@@ -45,7 +46,7 @@ public class ConfigReader {
     return null;
   }
 
-  Metadata readConfig(InputStream configStream) {
+  public Metadata readConfig(InputStream configStream) {
 
     Yaml yaml = new Yaml();
 

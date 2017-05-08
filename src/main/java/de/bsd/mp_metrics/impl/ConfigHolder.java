@@ -1,4 +1,6 @@
-package de.bsd.mp_metrics;
+package de.bsd.mp_metrics.impl;
+
+import de.bsd.mp_metrics.Metadata;
 
 /**
  * @author hrupp

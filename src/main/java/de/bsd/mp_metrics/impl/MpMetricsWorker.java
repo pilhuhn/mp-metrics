@@ -1,5 +1,7 @@
-package de.bsd.mp_metrics;
+package de.bsd.mp_metrics.impl;
 
+import de.bsd.mp_metrics.ApplicationMetrics;
+import de.bsd.mp_metrics.MetadataEntry;
 import java.lang.management.ManagementFactory;
 import java.util.HashMap;
 import java.util.List;

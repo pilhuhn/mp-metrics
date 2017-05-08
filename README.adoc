@@ -16,7 +16,7 @@ Tests in `src/it/java/de/bsd/mp_metrics/it/MpMetricsIT` are then run against tha
 == Running
 
 ----
-$ java -jar target/mp-metrics-swarm.jar -Dmapping=src/main/resources/mapping.yml
+$ java -jar target/mp-metrics-swarm.jar -Dmapping=src/main/resources/de/bsd/mp_metrics/mapping.yml
 ----
 
 === Obtaining data via the REST-Interface

@@ -92,7 +92,7 @@
 
         </executions>
         <configuration>
-          <mainClass>de.bsd.mp_metrics.Main</mainClass>
+          <mainClass>de.bsd.mp_metrics.impl.Main</mainClass>
         </configuration>
       </plugin>
 

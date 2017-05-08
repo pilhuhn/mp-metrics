@@ -14,8 +14,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.bsd.mp_metrics;
+package de.bsd.mp_metrics.impl;
 
+import de.bsd.mp_metrics.ApplicationMetrics;
+import de.bsd.mp_metrics.Metadata;
+import de.bsd.mp_metrics.MetadataEntry;
+import de.bsd.mp_metrics.MpMType;
+import de.bsd.mp_metrics.MpMUnit;
+import de.bsd.mp_metrics.demo.DemoBean;
 import java.util.Arrays;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.wildfly.swarm.Swarm;

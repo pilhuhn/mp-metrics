@@ -14,8 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.bsd.mp_metrics;
+package de.bsd.mp_metrics.demo;
 
+import de.bsd.mp_metrics.ApplicationMetrics;
+import de.bsd.mp_metrics.MetadataEntry;
+import de.bsd.mp_metrics.MpMType;
+import de.bsd.mp_metrics.MpMUnit;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -33,6 +37,15 @@ public class DemoBean {
   ApplicationMetrics applicationMetric;
 
   Logger log = Logger.getLogger(this.getClass().getName());
+
+  // We call this from the JaxRS Application start
+  public static void registerMetricsForDemoBean() {
+      // Register Metrics for our DemoBean
+      ApplicationMetrics applicationMetric = ApplicationMetrics.getInstance();
+      MetadataEntry demoEntry = new MetadataEntry("demo", null, "Just a demo value", MpMType.GAUGE, MpMUnit.NONE);
+      demoEntry.setTags("app=demo");
+      applicationMetric.registerMetric("demo", demoEntry);
+  }
 
   @GET
   @Path("/hello")
