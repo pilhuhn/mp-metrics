@@ -1,10 +1,7 @@
 package de.bsd.mp_metrics.impl;
 
 import de.bsd.mp_metrics.ApplicationMetrics;
-import de.bsd.mp_metrics.Metadata;
 import de.bsd.mp_metrics.demo.DemoBean;
-import de.bsd.mp_metrics.impl.ConfigHolder;
-import de.bsd.mp_metrics.impl.ConfigReader;
 import java.io.InputStream;
 import java.net.URL;
 import javax.enterprise.context.ApplicationScoped;

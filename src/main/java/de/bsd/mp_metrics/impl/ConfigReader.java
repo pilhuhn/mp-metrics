@@ -16,7 +16,6 @@
  */
 package de.bsd.mp_metrics.impl;
 
-import de.bsd.mp_metrics.Metadata;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

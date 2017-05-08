@@ -17,7 +17,6 @@
 package de.bsd.mp_metrics.impl;
 
 import de.bsd.mp_metrics.ApplicationMetrics;
-import de.bsd.mp_metrics.Metadata;
 import de.bsd.mp_metrics.MetadataEntry;
 import de.bsd.mp_metrics.MpMType;
 import de.bsd.mp_metrics.MpMUnit;

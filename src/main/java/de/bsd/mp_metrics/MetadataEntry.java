@@ -25,13 +25,44 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  */
 @SuppressWarnings("unused")
 public class MetadataEntry {
+
+  /**
+   * Name of the metric.
+   * <p>Exposed over REST</p>
+   */
   private String name;
+  /**
+   * Display name of the metric. If not set, the name is taken.
+   * <p>Exposed over REST</p>
+   */
   private String displayName;
+  /**
+   * The mbean info to retrieve the data from.
+   * Format is objectname/attribute[#field], with field
+   * being one field in a composite attribute.
+   * E.g. java.lang:type=Memory/HeapMemoryUsage#max
+   */
   @JsonIgnore
   private String mbean;
+  /**
+   * A human readable description.
+   * <p>Exposed over REST</p>
+   */
   private String description;
+  /**
+   * Type of the metric.
+   * <p>Exposed over REST</p>
+   */
   private MpMType type;
+  /**
+   * Unit of the metric.
+   * <p>Exposed over REST</p>
+   */
   private MpMUnit unit;
+  /**
+   * Tags of the metric. Augmented by global tags.
+   * <p>Exposed over REST</p>
+   */
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String tags;
 

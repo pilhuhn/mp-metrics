@@ -19,10 +19,20 @@ package de.bsd.mp_metrics;
 import java.util.EnumSet;
 
 /**
+ * The kind of a metric
  * @author hrupp
  */
+@SuppressWarnings("unused")
 public enum MpMType {
+  /**
+   * A Counter monotonically in-/decreases its values.
+   * An example could be the number of Transactions committed.
+    */
   COUNTER("counter"),
+  /**
+   * A Gauge has values that 'arbitrarily' go up/down at each
+   * sampling. An example could be CPU load
+   */
   GAUGE("gauge")
   ;
 

@@ -14,13 +14,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.bsd.mp_metrics;
+package de.bsd.mp_metrics.impl;
 
+import de.bsd.mp_metrics.ApplicationMetrics;
+import de.bsd.mp_metrics.MetadataEntry;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 /**
+ * Class holding the medatata for base, vendor and applications
  * @author hrupp
  */
 public class Metadata {

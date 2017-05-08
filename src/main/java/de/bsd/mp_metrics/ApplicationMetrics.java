@@ -26,6 +26,7 @@ import java.util.Map;
  * Holder for application metrics
  * @author hrupp
  */
+@SuppressWarnings("unused")
 public class ApplicationMetrics implements Serializable {
 
   private Map<String,Number> values = new HashMap<>();
@@ -39,12 +40,25 @@ public class ApplicationMetrics implements Serializable {
     return theInstance;
   }
 
+  /**
+   * Register an application metric with a certain name and its metadata.
+   * If a metric is registered, but no value has been set yet, it will
+   * return 0 - both via REST api and via #getValue
+   * @param key The name of the metric
+   * @param theData The metadata
+   */
   public void registerMetric(String key, MetadataEntry theData) {
     this.metadata.put(key,theData);
     this.values.put(key,0);
 
   }
 
+  /**
+   * Store a value for key to be exposed by the rest-api
+   * @param key the name of a metric
+   * @param value the value
+   * @throws IllegalArgumentException if the key was not registered.
+   */
   public void storeValue(String key, Number value) {
     if (!metadata.containsKey(key)) {
       throw new IllegalArgumentException("Unknown metric '" + key + "'");
@@ -52,6 +66,12 @@ public class ApplicationMetrics implements Serializable {
     values.put(key,value);
   }
 
+  /**
+   * Retrieve the value of the key
+   * @param key The name of the metric
+   * @throws IllegalArgumentException if the key was not registered.
+   * @return a numeric value
+   */
   public Number getValue(String key) {
     if (!metadata.containsKey(key)) {
       throw new IllegalArgumentException("Unknown metric '" + key + "'");
@@ -60,6 +80,13 @@ public class ApplicationMetrics implements Serializable {
     return values.getOrDefault(key, 0);
   }
 
+  /**
+   * Increase the value of a given metric by a certain delta
+   * @param key The name of the metric
+   * @param increment increment (could be negative to decrement)
+   * @return The new value
+   * @throws IllegalArgumentException if the key was not registered.
+   */
   public Number bumpValue(String key, int increment) {
     Number num = getValue(key);
     if (num instanceof Float) {
@@ -71,22 +98,38 @@ public class ApplicationMetrics implements Serializable {
     return num;
   }
 
+  /**
+   * Increase the value of the given metric by 1.
+   * @param key Name of the metric
+   * @return The new value of the metric
+   * @throws IllegalArgumentException if the key was not registered.
+   */
   public Number bumpValue(String key) {
     return bumpValue(key,1);
   }
 
 
-
-
+  /**
+   * Return a map with the key + numeric values of all registered metrics
+   * @return New map with keys and values
+   */
   public Map<String, Number> getAll() {
     return new HashMap<>(values);
   }
 
+  /**
+   * Return a map with all keys + metadata for all registered metrics
+   * @return New map with keys and metadata
+   */
   public Map<String,MetadataEntry> getAllMetaData() {
     return new HashMap<>(metadata);
   }
 
 
+  /**
+   * Return a list of metadata items of the registered metrics.
+   * @return New list of metadata items
+   */
   public List<MetadataEntry> getMetadataList() {
     return new ArrayList<>(metadata.values());
   }

@@ -20,15 +20,38 @@ package de.bsd.mp_metrics;
 import java.util.EnumSet;
 
 /**
- * Units for the metrics
+ * Units for the metrics.
+ *
  * @author hrupp
  */
+@SuppressWarnings("unused")
 public enum MpMUnit {
+  /** Dummy to say that this has no unit */
   NONE ("none"),
 
+  /** A single Bit. Not defined by SI, but by IEC 60027 */
+  BIT("bit"),
+  /** 1000 {@link #BIT} */
+  KILOBIT("kilobit"),
+  /** 1000 {@link #KIBIBIT} */
+  MEGABIT("megabit"),
+  /** 1000 {@link #MEGABIT} */
+  GIGABIT("gigabit"),
+  /** 1024 {@link #BIT} */
+  KIBIBIT("kibibit"),
+  /** 1024 {@link #KIBIBIT}  */
+  MEBIBIT("mebibit"),
+  /** 1024 {@link #MEBIBIT} */
+  GIBIBIT("gibibit"), /* 1024 mebibit */
+
+  /** 8 {@link #BIT} */
   BYTE ("byte"),
-  KILO_BYTE ("kbyte"),
-  MEGA_BYTE ("mbyte"),
+  /** 1024 {@link #BYTE} */
+  KILO_BYTE ("kbyte"), // 1024 bytes
+  /** 1024 {@link #KILO_BYTE} */
+  MEGA_BYTE ("mbyte"), // 1024 kilo bytes
+  /** 1024 {@link #MEGA_BYTE} */
+  GIGA_BYTE("gbyte"),
 
   NANOSECONDS("ns"),
   MICROSECONDS("us"),
