@@ -22,6 +22,7 @@ import static org.hamcrest.core.Is.is;
 
 import de.bsd.mp_metrics.impl.Main;
 import io.restassured.RestAssured;
+import java.util.List;
 import java.util.Map;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
@@ -101,13 +102,35 @@ public class MpMetricsIT  {
   }
 
   @Test
-  public void testApplicationMetadata() {
+  public void testApplicationMetadataOkJson() {
     RestAssured.options("http://localhost:8080/metrics/application")
         .then().statusCode(200)
         .and().contentType("application/json")
-        .and().body("[0].name", is("demo"))
-        .and().body("[0].tags", containsString("app=demo"))
-    ;
+      ;
+  }
+
+  @Test
+  public void testApplicationMetadata() {
+    List<Map> body = RestAssured.options("http://localhost:8080/metrics/application")
+        .as(List.class);
+
+    assert body.size()==2;
+
+    for (Map entry : body) {
+      if (entry.get("name").equals("hello")) {
+
+        assert entry.get("unit").equals("none");
+        assert ((String)entry.get("tags")).contains("app=shop");
+      }
+      else if (entry.get("name").equals("ola")) {
+
+        assert entry.get("unit").equals("none");
+        assert ((String)entry.get("tags")).contains("app=ola");
+      }
+      else {
+        throw new RuntimeException("Unexpected body element");
+      }
+    }
   }
 
   @Test
@@ -116,32 +139,32 @@ public class MpMetricsIT  {
         .then().statusCode(200)
         .and().contentType("application/json")
         .and()
-        .body(containsString("demo"));
+        .body(containsString("ola"),containsString("hello"));
 
   }
 
   @Test
-  public void testApplicationsDataDemo() {
+  public void testApplicationsDataHello() {
     // Get the counter
     int count = when().get("http://localhost:8080/demo/count")
         .then().statusCode(200)
-        .extract().path("demo");
+        .extract().path("hello");
 
 
-    when().get("http://localhost:8080/metrics/application/demo")
+    when().get("http://localhost:8080/metrics/application/hello")
         .then().statusCode(200)
         .and().contentType("application/json")
         .and()
-        .body(containsString("\"demo\":"+count));
+        .body(containsString("\"hello\":"+count));
   }
 
   @Test
-  public void testApplicationsDataDemo2() {
+  public void testApplicationsDataHello2() {
 
     // Get the counter
     int count = when().get("http://localhost:8080/demo/count")
         .then().statusCode(200)
-        .extract().path("demo");
+        .extract().path("hello");
 
     // Call hello world to bump the counter
     when().get("http://localhost:8080/demo/hello")
@@ -150,11 +173,11 @@ public class MpMetricsIT  {
 
 
     // Compare with what we got from the metrics api
-    when().get("http://localhost:8080/metrics/application/demo")
+    when().get("http://localhost:8080/metrics/application/hello")
         .then().statusCode(200)
         .and().contentType("application/json")
         .and()
-        .body(containsString("\"demo\":"+count));
+        .body(containsString("\"hello\":"+count));
   }
 
 }

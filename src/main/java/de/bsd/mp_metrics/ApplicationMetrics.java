@@ -41,15 +41,21 @@ public class ApplicationMetrics implements Serializable {
   }
 
   /**
-   * Register an application metric with a certain name and its metadata.
+   * Register an application metric via its metadata.
+   * It is required that each application metric has a unique name
+   * set in its metadata.
    * If a metric is registered, but no value has been set yet, it will
    * return 0 - both via REST api and via #getValue
-   * @param key The name of the metric
    * @param theData The metadata
    */
-  public void registerMetric(String key, MetadataEntry theData) {
-    this.metadata.put(key,theData);
-    this.values.put(key,0);
+  public void registerMetric(MetadataEntry theData) {
+    String name = theData.getName();
+    if (name ==null || name.isEmpty()) {
+      throw new IllegalArgumentException("Name must not be null or empty");
+    }
+
+    this.metadata.put(name,theData);
+    this.values.put(name,0);
 
   }
 
@@ -70,7 +76,7 @@ public class ApplicationMetrics implements Serializable {
    * Retrieve the value of the key
    * @param key The name of the metric
    * @throws IllegalArgumentException if the key was not registered.
-   * @return a numeric value
+   * @return a previously set numeric value or 0 otherwise
    */
   public Number getValue(String key) {
     if (!metadata.containsKey(key)) {

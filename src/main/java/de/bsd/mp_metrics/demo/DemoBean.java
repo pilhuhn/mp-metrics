@@ -33,6 +33,7 @@ import org.jboss.logging.Logger;
 @Path("/demo")
 public class DemoBean {
 
+  private static final String OLA = "ola";
   @Inject
   ApplicationMetrics applicationMetric;
 
@@ -42,16 +43,22 @@ public class DemoBean {
   public static void registerMetricsForDemoBean() {
       // Register Metrics for our DemoBean
       ApplicationMetrics applicationMetric = ApplicationMetrics.getInstance();
-      MetadataEntry demoEntry = new MetadataEntry("demo", null, "Just a demo value", MpMType.GAUGE, MpMUnit.NONE);
-      demoEntry.setTags("app=demo");
-      applicationMetric.registerMetric("demo", demoEntry);
+      MetadataEntry olaEntry = new MetadataEntry(OLA, null, "Just a demo value", MpMType.GAUGE, MpMUnit.NONE);
+      olaEntry.setTags("app=ola");
+      applicationMetric.registerMetric(olaEntry);
+      applicationMetric.storeValue(olaEntry.getName(),42);
+
+      MetadataEntry helloEntry = new MetadataEntry("hello", null, "Just another demo value", MpMType.COUNTER, MpMUnit
+          .NONE, "app=shop");
+      applicationMetric.registerMetric(helloEntry);
+
   }
 
   @GET
   @Path("/hello")
   public String hello() {
     log.info("Hello");
-    applicationMetric.bumpValue("demo",1);
+    applicationMetric.bumpValue("hello",1);
     return "Hello World";
   }
 
@@ -59,8 +66,8 @@ public class DemoBean {
   @Path("/count")
   @Produces("application/json")
   public String count() {
-    Number number = applicationMetric.getValue("demo");
+    Number number = applicationMetric.getValue("hello");
     long value = number.longValue();
-    return "{\"demo\":" + value + "}";
+    return "{\"hello\":" + value + "}";
   }
 }

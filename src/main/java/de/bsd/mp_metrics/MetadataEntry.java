@@ -18,6 +18,7 @@ package de.bsd.mp_metrics;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import javax.validation.constraints.NotNull;
 
 /**
  * Bean holding the metadata of one single metric
@@ -69,20 +70,27 @@ public class MetadataEntry {
   public MetadataEntry() {
   }
 
-  public MetadataEntry(String name, String displayName, String description, MpMType type, MpMUnit unit) {
+  public MetadataEntry(@NotNull String name, MpMType type, MpMUnit unit) {
     this.name = name;
-    this.displayName = displayName;
-    this.description = description;
     this.type = type;
-    this.unit = unit; // .toString();
+    this.unit = unit;
   }
 
-  public MetadataEntry(String name, String displayName, String description, MpMType type, MpMUnit unit, String tags) {
+  public MetadataEntry(@NotNull String name, String displayName, String description, MpMType type, MpMUnit unit) {
     this.name = name;
     this.displayName = displayName;
     this.description = description;
     this.type = type;
-    this.unit = unit; // .toString();
+    this.unit = unit;
+  }
+
+  public MetadataEntry(@NotNull String name, String displayName, String description, MpMType type, MpMUnit unit, String
+      tags) {
+    this.name = name;
+    this.displayName = displayName;
+    this.description = description;
+    this.type = type;
+    this.unit = unit;
     this.tags = tags;
   }
 

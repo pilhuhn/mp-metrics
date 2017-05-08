@@ -47,6 +47,12 @@ public enum MpMType {
     return type;
   }
 
+  /**
+   * Convert the string representation in to an enum
+   * @param in the String representation
+   * @return the matching Enum
+   * @throws IllegalArgumentException if in is not a valid enum value
+   */
   public static MpMType from(String in) {
     EnumSet<MpMType> enumSet = EnumSet.allOf(MpMType.class);
     for (MpMType u : enumSet) {
