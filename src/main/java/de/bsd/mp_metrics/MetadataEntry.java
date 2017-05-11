@@ -146,12 +146,17 @@ public class MetadataEntry {
   }
 
   public String getTags() {
+    String result = null;
     String globalTags = System.getenv("MP_METRICS_TAGS");
+
     if (globalTags!=null && !globalTags.isEmpty()) {
-      return tags + "," + globalTags;
-    } else {
-      return tags;
+      result = globalTags;
     }
+    if (tags!=null && !tags.isEmpty()) {
+      result = result + "," + tags;
+    }
+
+    return result;
   }
 
   public void setTags(String tags) {
