@@ -162,7 +162,11 @@
           </systemPropertyVariables>
           <includes>
             <include>**/*IT.java</include>
+            <include>**/*Test.java</include>
           </includes>
+          <environmentVariables>
+            <MP_METRICS_TAGS>tier=integration</MP_METRICS_TAGS>
+          </environmentVariables>
         </configuration>
       </plugin>
 
@@ -171,11 +175,15 @@
         <configuration>
           <includes>
             <include>**/*IT.java</include>
+            <include>**/*Test.java</include>
           </includes>
           <systemPropertyVariables>
             <phantomjs.binary.version>2.1.1</phantomjs.binary.version>
             <org.apache.maven.user-settings>${session.request.userSettingsFile.path}</org.apache.maven.user-settings>
           </systemPropertyVariables>
+          <environmentVariables>
+            <MP_METRICS_TAGS>tier=integration</MP_METRICS_TAGS>
+          </environmentVariables>
         </configuration>
         <executions>
           <execution>

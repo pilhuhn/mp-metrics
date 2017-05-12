@@ -20,6 +20,11 @@ base:
     description: "Number of threads started for this server"
     unit: "byte"
     type: "counter"
+    tags:
+      - key: "domain"
+        value: "memory"
+      - key: "type"
+        value: "heap"
 
 vendor:
   - name: "msc-loaded-modules"

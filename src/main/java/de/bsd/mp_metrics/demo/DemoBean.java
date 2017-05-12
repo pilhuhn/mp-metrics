@@ -44,7 +44,7 @@ public class DemoBean {
       // Register Metrics for our DemoBean
       ApplicationMetrics applicationMetric = ApplicationMetrics.getInstance();
       MetadataEntry olaEntry = new MetadataEntry(OLA, null, "Just a demo value", MpMType.GAUGE, MpMUnit.NONE);
-      olaEntry.setTags("app=ola");
+      olaEntry.addTag("app=ola");
       applicationMetric.registerMetric(olaEntry);
       applicationMetric.storeValue(olaEntry.getName(),42);
 

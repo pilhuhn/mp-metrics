@@ -20,6 +20,7 @@ import de.bsd.mp_metrics.ApplicationMetrics;
 import de.bsd.mp_metrics.MetadataEntry;
 import de.bsd.mp_metrics.MpMType;
 import de.bsd.mp_metrics.MpMUnit;
+import de.bsd.mp_metrics.Tag;
 import de.bsd.mp_metrics.demo.DemoBean;
 import java.util.Arrays;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -62,6 +63,7 @@ public class Main {
     deployment.addClass(ApplicationMetrics.class);
     deployment.addClass(MpMUnit.class);
     deployment.addClass(MpMType.class);
+    deployment.addClass(Tag.class);
 
 
     deployment.addClass(DemoBean.class);

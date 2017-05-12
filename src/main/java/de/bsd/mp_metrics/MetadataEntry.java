@@ -16,8 +16,12 @@
  */
 package de.bsd.mp_metrics;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -65,18 +69,30 @@ public class MetadataEntry {
    * <p>Exposed over REST</p>
    */
   @JsonInclude(JsonInclude.Include.NON_NULL)
-  private String tags;
+  private List<Tag> tags = new ArrayList<>();
+
+  @JsonIgnore
+  private List<Tag> globalTags;
 
   public MetadataEntry() {
+    String globalTagsFromEnv = System.getenv("MP_METRICS_TAGS");
+
+    // We use the parsing logic, but need to save them away, as the yaml
+    // Config will overwrite them otherwise.
+    addTags(globalTagsFromEnv);
+    this.globalTags = tags;
+    this.tags = new ArrayList<>();
   }
 
   public MetadataEntry(@NotNull String name, MpMType type, MpMUnit unit) {
+    this();
     this.name = name;
     this.type = type;
     this.unit = unit;
   }
 
   public MetadataEntry(@NotNull String name, String displayName, String description, MpMType type, MpMUnit unit) {
+    this();
     this.name = name;
     this.displayName = displayName;
     this.description = description;
@@ -86,12 +102,13 @@ public class MetadataEntry {
 
   public MetadataEntry(@NotNull String name, String displayName, String description, MpMType type, MpMUnit unit, String
       tags) {
+    this();
     this.name = name;
     this.displayName = displayName;
     this.description = description;
     this.type = type;
     this.unit = unit;
-    this.tags = tags;
+    addTags(tags);
   }
 
   public String getName() {
@@ -145,21 +162,54 @@ public class MetadataEntry {
     this.unit = MpMUnit.from(unit);
   }
 
-  public String getTags() {
-    String result = null;
-    String globalTags = System.getenv("MP_METRICS_TAGS");
 
-    if (globalTags!=null && !globalTags.isEmpty()) {
-      result = globalTags;
+  @JsonGetter("tags")
+  public String getTagsAsString() {
+    StringBuilder result = new StringBuilder();
+
+    Iterator<Tag> iterator = getTags().iterator();
+    while( iterator.hasNext() ) {
+      Tag aTag = iterator.next();
+      result.append(aTag.getKey()).append("=\"").append(aTag.getValue()).append("\"");
+      if (iterator.hasNext()) {
+        result.append(",");
+      }
     }
-    if (tags!=null && !tags.isEmpty()) {
-      result = result + "," + tags;
-    }
+    return result.toString();
+  }
+
+  public List<Tag> getTags() {
+    List<Tag> result = new ArrayList<>(this.tags);
+    result.addAll(globalTags);
 
     return result;
   }
 
-  public void setTags(String tags) {
+  /**
+   * Add one single tag. Format is 'key=value'.
+   * If the input is empty or does not contain a '=' sign, the
+   * entry is ignored.
+   * @param kvString Input string
+   */
+  public void addTag(String kvString) {
+    if (kvString==null || kvString.isEmpty() || !kvString.contains("=")) {
+      return;
+    }
+    tags.add(new Tag(kvString));
+  }
+
+  public void addTags(String tagsString) {
+    if (tagsString==null || tagsString.isEmpty()) {
+      return;
+    }
+
+    String[] singleTags = tagsString.split(",");
+    for (String singleTag : singleTags) {
+      addTag(singleTag.trim());
+    }
+  }
+
+  public void setTags(List<Tag> tags) {
     this.tags = tags;
   }
 
