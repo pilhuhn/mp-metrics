@@ -72,6 +72,36 @@ Date: Fri, 05 May 2017 09:28:32 GMT
 ]
 ----
 
+=== Prometheus text format
+
+It is also possible to retrieve metric values (along with part of the metadata):
+
+.Retrive data in Prometheus format
+----
+ curl -i -X GET -HAccept:text/plain http://localhost:8080/metrics/
+HTTP/1.1 200 OK
+Connection: keep-alive
+Content-Type: text/plain
+Content-Length: 609
+Date: Fri, 12 May 2017 15:35:31 GMT
+
+# TYPE base:thread_count gauge
+base:thread_count{tier="integration"} 43
+# TYPE base:peak_thread_count gauge
+base:peak_thread_count{tier="integration"} 62
+# TYPE base:total_started_thread_count counter
+base:total_started_thread_count{tier="integration"} 73
+# TYPE base:max_heap counter
+base:max_heap{domain="memory",type="heap",tier="integration"} 3817865216
+# TYPE vendor:msc_loaded_modules gauge
+vendor:msc_loaded_modules{tier="integration"} 244
+# TYPE application:ola gauge
+application:ola{app="ola",tier="integration"} 42
+# TYPE application:hello counter
+application:hello{app="shop",tier="integration"} 0
+----
+
+
 
 == Using in Applications
 

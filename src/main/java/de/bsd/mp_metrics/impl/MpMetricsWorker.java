@@ -37,36 +37,59 @@ public class MpMetricsWorker {
     }
 
     @GET
-    public Map<String, Map<String,Number>> getAllValues() {
+    @Path("/")
+    @Produces("application/json")
+    public Map<String, Map<String,Number>> getAllValuesJson() {
         Map<String, Map<String,Number>> results = new HashMap<>(bases.length);
         for (String subTree : bases) {
-            results.put(subTree, getValuesForSubTree(subTree));
+            results.put(subTree, getValuesForSubTreeAsMap(subTree));
         }
         return results;
     }
 
     @GET
+    @Produces("text/plain")
+    public String getAllValuesPrometheus() {
+        StringBuilder builder = new StringBuilder();
+        for (String subTree : bases) {
+            builder.append(getValuesForSubTreeAsPromString(subTree));
+        }
+        return builder.toString();
+    }
+
+    @GET
     @Path("/{sub}")
-    public Map<String, Number> getBaseValues(@PathParam("sub")String sub) {
+    @Produces("application/json")
+    public Map<String, Number> getBaseValuesJson(@PathParam("sub")String sub) {
 
         validateSub(sub);
-        return getValuesForSubTree(sub);
+        return getValuesForSubTreeAsMap(sub);
+    }
+
+    @GET
+    @Produces("text/plain")
+    @Path("/{sub}")
+    public String getBaseValuesPrometheus(@PathParam("sub")String sub) {
+
+        validateSub(sub);
+        return getValuesForSubTreeAsPromString(sub);
     }
 
 
     @GET
-    @Path("/{sub}/{field}")
-    public Map<String,Number> getValueForField(@PathParam("sub") String sub, @PathParam("field") String field) {
+    @Path("/{sub}/{attribute}")
+    @Produces("application/json")
+    public Map<String,Number> getValueForFieldJson(@PathParam("sub") String sub, @PathParam("attribute") String attribute) {
 
         List<MetadataEntry> metadata = ConfigHolder.getInstance().getConfig().get(sub);
         Map<String,Number> results = new HashMap<>(1);
 
         for (MetadataEntry entry : metadata) {
-            if (entry.getName().equals(field)) {
+            if (entry.getName().equals(attribute)) {
 
                 Number value;
                 if (APPLICATION.equals(sub)) {
-                    value = applicationMetric.getValue(field);
+                    value = applicationMetric.getValue(attribute);
                 } else {
                     value = getValue(entry.getMbean());
                 }
@@ -75,10 +98,41 @@ public class MpMetricsWorker {
                 return results;
             }
         }
-        throw new NotFoundException(sub + " / "+ field);
+        throw new NotFoundException(sub + " / "+ attribute);
+    }
+
+    @GET
+    @Produces("text/plain")
+    @Path("/{sub}/{attribute}")
+    public String getValueForFieldPrometheus(@PathParam("sub") String sub, @PathParam("attribute") String
+        attribute) {
+
+        List<MetadataEntry> metadata = ConfigHolder.getInstance().getConfig().get(sub);
+        StringBuilder builder = new StringBuilder();
+
+        for (MetadataEntry entry : metadata) {
+            String key = entry.getName();
+            if (key.equals(attribute)) {
+                String name = sub + ":" + key;
+
+                getPromTypeLine(builder, entry, name);
+
+                Number value;
+                if (APPLICATION.equals(sub)) {
+                    value = applicationMetric.getValue(attribute);
+                } else {
+                    value = getValue(entry.getMbean());
+                }
+                getPromValueLine(builder, entry, name, value);
+
+                return builder.toString();
+            }
+        }
+        throw new NotFoundException(sub + " / "+ attribute);
     }
 
     @OPTIONS
+    @Produces("application/json")
     public Map<String, List<MetadataEntry>> getAllMetadata() {
 
         Map<String, List<MetadataEntry>> results = new HashMap<>(bases.length);
@@ -97,6 +151,7 @@ public class MpMetricsWorker {
 
     @OPTIONS
     @Path("/{sub}")
+    @Produces("application/json")
     public List<MetadataEntry> getMetadataForSubTree(@PathParam("sub")String sub) {
 
         validateSub(sub);
@@ -109,7 +164,7 @@ public class MpMetricsWorker {
         return metadata;
     }
 
-    private Map<String, Number> getValuesForSubTree(String sub) {
+    private Map<String, Number> getValuesForSubTreeAsMap(String sub) {
         List<MetadataEntry> metadata = ConfigHolder.getInstance().getConfig().get(sub);
         Map<String,Number> results = new HashMap<>(metadata.size());
 
@@ -125,6 +180,46 @@ public class MpMetricsWorker {
             results.put(key, value);
         }
         return results;
+    }
+
+    private String getValuesForSubTreeAsPromString(String sub) {
+        List<MetadataEntry> metadata = ConfigHolder.getInstance().getConfig().get(sub);
+
+        StringBuilder builder = new StringBuilder();
+        for (MetadataEntry entry : metadata) {
+            String key = entry.getName();
+            String name = sub + ":" + key;
+
+            getPromTypeLine(builder, entry, name);
+
+            Number value;
+
+            if (APPLICATION.equals(sub)) {
+                value = applicationMetric.getValue(key);
+            } else {
+                value = getValue(entry.getMbean());
+            }
+
+            getPromValueLine(builder, entry, name, value);
+        }
+        return builder.toString();
+    }
+
+    private void getPromValueLine(StringBuilder builder, MetadataEntry entry, String name, Number value) {
+        String sanitizedName = name.replace('-', '_');
+        builder.append(sanitizedName);
+        // Add tags
+        String tags=entry.getTagsAsString();
+        if (tags!=null && !tags.isEmpty()) {
+            builder.append('{').append(tags).append('}');
+        }
+        builder.append(" ").append(value).append('\n');
+    }
+
+    private void getPromTypeLine(StringBuilder builder, MetadataEntry entry, String name) {
+
+        String sanitizedName = name.replace('-', '_');
+        builder.append("# TYPE ").append(sanitizedName).append(" ").append(entry.getType()).append("\n");
     }
 
     /**

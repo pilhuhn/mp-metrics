@@ -16,6 +16,7 @@
  */
 package de.bsd.mp_metrics.it;
 
+import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.when;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.core.Is.is;
@@ -40,6 +41,8 @@ import org.wildfly.swarm.jaxrs.JAXRSArchive;
 @RunWith(Arquillian.class)
 public class MpMetricsIT  {
 
+  private static final String APPLICATION_JSON = "application/json";
+
   @Deployment
   public static Archive createDeployment() throws Exception {
     JAXRSArchive deployment = Main.getJaxrsArchive();
@@ -55,13 +58,20 @@ public class MpMetricsIT  {
   }
 
   @Test
-  public void testListsAll() {
-    when().get("http://localhost:8080/metrics")
+  public void testListsAllJson() {
+    given()
+        .header("Accept",APPLICATION_JSON)
+    .when()
+        .get("http://localhost:8080/metrics")
         .then()
         .statusCode(200)
-        .and().contentType("application/json");
+        .and().contentType(APPLICATION_JSON);
 
-    Map response = when().get("http://localhost:8080/metrics")
+    Map response =
+        given()
+            .header("Accept",APPLICATION_JSON)
+        .when()
+            .get("http://localhost:8080/metrics")
         .as(Map.class);
 
     assert response.containsKey("base");
@@ -69,22 +79,74 @@ public class MpMetricsIT  {
     assert response.containsKey("application");
   }
 
+  @Test
+  public void testListsAllPrometheus() {
+    given()
+        .header("Accept","text/plain")
+    .when()
+        .get("http://localhost:8080/metrics")
+        .then()
+        .statusCode(200)
+        .and().contentType("text/plain");
+  }
+
 
   @Test
   public void testBase() {
-    when().get("http://localhost:8080/metrics/base")
+    given()
+        .header("Accept", APPLICATION_JSON)
+    .when().get("http://localhost:8080/metrics/base")
         .then()
         .statusCode(200)
-        .and().contentType("application/json")
+        .and().contentType(MpMetricsIT.APPLICATION_JSON)
         .and()
         .body(containsString("total-started-thread-count"));
+  }
+
+  @Test
+  public void testBasePrometheus() {
+    given()
+            .header("Accept","text/plain")
+    .when().get("http://localhost:8080/metrics/base")
+        .then()
+        .statusCode(200)
+        .and().contentType("text/plain")
+        .and()
+        .body(containsString("# TYPE base:total_started_thread_count"),
+              containsString("base:total_started_thread_count{tier=\"integration\"}"));
+  }
+
+  @Test
+  public void testBaseAttributeJson() {
+    given()
+        .header("Accept",APPLICATION_JSON)
+    .when().get("http://localhost:8080/metrics/base/total-started-thread-count")
+        .then()
+        .statusCode(200)
+        .and().contentType(MpMetricsIT.APPLICATION_JSON)
+        .and()
+        .body(containsString("total-started-thread-count"));
+  }
+
+
+  @Test
+  public void testBaseAttributePrometheus() {
+    given()
+            .header("Accept","text/plain")
+    .when().get("http://localhost:8080/metrics/base/total-started-thread-count")
+        .then()
+        .statusCode(200)
+        .and().contentType("text/plain")
+        .and()
+        .body(containsString("# TYPE base:total_started_thread_count"),
+              containsString("base:total_started_thread_count{tier=\"integration\"}"));
   }
 
   @Test
   public void testVendor() {
     when().get("http://localhost:8080/metrics/base")
         .then()
-        .contentType("application/json")
+        .contentType(MpMetricsIT.APPLICATION_JSON)
         .and()
         .body(containsString("total-started-thread-count"));
 
@@ -95,17 +157,21 @@ public class MpMetricsIT  {
   //  "description":"Number of loaded modules","type":"gauge","unit":"none"}]
   @Test
   public void testVendorMetadata() {
-    RestAssured.options("http://localhost:8080/metrics/vendor")
+    given()
+            .header("Accept",APPLICATION_JSON)
+    .options("http://localhost:8080/metrics/vendor")
         .then().statusCode(200)
-        .and().contentType("application/json")
+        .and().contentType(MpMetricsIT.APPLICATION_JSON)
         .and().body("[0].name", is("msc-loaded-modules"));
   }
 
   @Test
   public void testApplicationMetadataOkJson() {
-    RestAssured.options("http://localhost:8080/metrics/application")
+    given()
+        .header("Accept",APPLICATION_JSON)
+    .options("http://localhost:8080/metrics/application")
         .then().statusCode(200)
-        .and().contentType("application/json")
+        .and().contentType(MpMetricsIT.APPLICATION_JSON)
       ;
   }
 
@@ -117,15 +183,15 @@ public class MpMetricsIT  {
     assert body.size()==2;
 
     for (Map entry : body) {
+      String tags = (String) entry.get("tags");
       if (entry.get("name").equals("hello")) {
 
         assert entry.get("unit").equals("none");
-        assert ((String)entry.get("tags")).contains("app=shop");
+        assert tags.contains("app=\"shop\"");
       }
       else if (entry.get("name").equals("ola")) {
-
         assert entry.get("unit").equals("none");
-        assert ((String)entry.get("tags")).contains("app=ola");
+        assert tags.contains("app=\"ola\"");
       }
       else {
         throw new RuntimeException("Unexpected body element");
@@ -135,9 +201,11 @@ public class MpMetricsIT  {
 
   @Test
   public void testApplicationsData() {
-    when().get("http://localhost:8080/metrics/application")
+    given()
+        .header("Accept",APPLICATION_JSON)
+    .when().get("http://localhost:8080/metrics/application")
         .then().statusCode(200)
-        .and().contentType("application/json")
+        .and().contentType(MpMetricsIT.APPLICATION_JSON)
         .and()
         .body(containsString("ola"),containsString("hello"));
 
@@ -151,9 +219,11 @@ public class MpMetricsIT  {
         .extract().path("hello");
 
 
-    when().get("http://localhost:8080/metrics/application/hello")
+    given()
+          .header("Accept",APPLICATION_JSON)
+    .when().get("http://localhost:8080/metrics/application/hello")
         .then().statusCode(200)
-        .and().contentType("application/json")
+        .and().contentType(MpMetricsIT.APPLICATION_JSON)
         .and()
         .body(containsString("\"hello\":"+count));
   }
@@ -173,9 +243,12 @@ public class MpMetricsIT  {
 
 
     // Compare with what we got from the metrics api
-    when().get("http://localhost:8080/metrics/application/hello")
+
+    given()
+            .header("Accept", MpMetricsIT.APPLICATION_JSON)
+    .when().get("http://localhost:8080/metrics/application/hello")
         .then().statusCode(200)
-        .and().contentType("application/json")
+        .and().contentType(MpMetricsIT.APPLICATION_JSON)
         .and()
         .body(containsString("\"hello\":"+count));
   }
