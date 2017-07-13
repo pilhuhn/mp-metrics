@@ -74,6 +74,13 @@ public class MetadataEntry {
   @JsonIgnore
   private List<Tag> globalTags;
 
+  /**
+   * Defines if the metric can have multiple objects
+   * and needs special treatment or if it is a
+   * singleton.<p/>
+   */
+  private boolean multi = false;
+
   public MetadataEntry() {
     String globalTagsFromEnv = System.getenv("MP_METRICS_TAGS");
 
@@ -147,7 +154,12 @@ public class MetadataEntry {
   }
 
   public String getType() {
-    return type.toString();
+    return type == null ?  MpMType.INVALID.toString() : type.toString() ;
+  }
+
+  @JsonIgnore
+  public MpMType getTypeRaw() {
+    return type;
   }
 
   public void setType(String type) {
@@ -158,10 +170,22 @@ public class MetadataEntry {
     return unit.toString();
   }
 
+  @JsonIgnore
+  public MpMUnit getUnitRaw() {
+    return unit;
+  }
+
   public void setUnit(String unit) {
     this.unit = MpMUnit.from(unit);
   }
 
+  public boolean isMulti() {
+    return multi;
+  }
+
+  public void setMulti(boolean multi) {
+    this.multi = multi;
+  }
 
   @JsonGetter("tags")
   public String getTagsAsString() {
@@ -182,6 +206,18 @@ public class MetadataEntry {
     List<Tag> result = new ArrayList<>(this.tags);
     result.addAll(globalTags);
 
+    return result;
+  }
+
+  /**
+   * Return the tags for this entry only
+   * without the global tags. This can be used
+   * when constructing new entries from this one
+   * @return List of Tags for this entry.
+   */
+  @JsonIgnore
+  public List<Tag> getTagsForEntryOnly() {
+    List<Tag> result = new ArrayList<>(this.tags);
     return result;
   }
 

@@ -30,6 +30,7 @@ public class Metadata {
 
   List<MetadataEntry> base;
   List<MetadataEntry> vendor;
+  List<MetadataEntry> integration;
   List<MetadataEntry> application;
 
   public List<MetadataEntry> getBase() {
@@ -54,6 +55,17 @@ public class Metadata {
     this.vendor = vendor;
   }
 
+  public List<MetadataEntry> getIntegration() {
+    if (integration==null) {
+      integration = new ArrayList<>(1);
+    }
+    return integration;
+  }
+
+  public void setIntegration(List<MetadataEntry> integration) {
+    this.integration = integration;
+  }
+
   public List<MetadataEntry> getApplication() {
     return ApplicationMetrics.getInstance().getMetadataList();
   }
@@ -62,6 +74,7 @@ public class Metadata {
     switch (domain) {
       case "base": return getBase();
       case "vendor" : return getVendor();
+      case "integration": return getIntegration();
       case "application" : return getApplication();
     }
     return Collections.emptyList();

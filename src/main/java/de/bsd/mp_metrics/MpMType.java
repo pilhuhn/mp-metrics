@@ -33,7 +33,11 @@ public enum MpMType {
    * A Gauge has values that 'arbitrarily' go up/down at each
    * sampling. An example could be CPU load
    */
-  GAUGE("gauge")
+  GAUGE("gauge"),
+  /**
+   * Invalid - just a placeholder
+   */
+  INVALID("invalid")
   ;
 
 

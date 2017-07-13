@@ -32,4 +32,20 @@ vendor:
     description: "Number of loaded modules"
     unit: "none"
     type: "gauge"
+  - name: "BufferPool_used_memory_%s"
+    mbean: "java.nio:type=BufferPool,name=%s/MemoryUsed"
+    description: "The memory used by the pool: %s"
+    multi: true
+    type: "gauge"
+    unit: "byte"
+
+
+# This next entry for servlet is bogus so far and does not
+# produce a result
+integration:
+  - name: "servlet:%s"
+    mbean: "bla:%s"
+    description: "Stats for Servlet %s"
+    multi: true
+
 

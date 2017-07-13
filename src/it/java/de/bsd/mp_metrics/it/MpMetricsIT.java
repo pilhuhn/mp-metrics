@@ -19,10 +19,12 @@ package de.bsd.mp_metrics.it;
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.when;
 import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.core.Is.is;
 
 import de.bsd.mp_metrics.impl.Main;
 import io.restassured.RestAssured;
+import io.restassured.path.json.JsonPath;
 import java.util.List;
 import java.util.Map;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -163,6 +165,34 @@ public class MpMetricsIT  {
         .then().statusCode(200)
         .and().contentType(MpMetricsIT.APPLICATION_JSON)
         .and().body("[0].name", is("msc-loaded-modules"));
+  }
+
+  @Test
+  public void testVendorMetadata2() {
+    given()
+            .header("Accept",APPLICATION_JSON)
+    .options("http://localhost:8080/metrics/vendor")
+        .then().statusCode(200)
+        .and().contentType(MpMetricsIT.APPLICATION_JSON)
+        .and().body("name", hasItem("BufferPool_used_memory_mapped"));
+  }
+
+  @Test
+  public void testVendorMetadata3() {
+    JsonPath jsonPath =
+      given()
+              .header("Accept",APPLICATION_JSON)
+      .options("http://localhost:8080/metrics/vendor")
+          .then().statusCode(200)
+          .and().contentType(MpMetricsIT.APPLICATION_JSON)
+          .extract().body().jsonPath();
+
+    //jsonPath.getMap("find {it.name == 'BufferPool_used_memory_direct'}");
+    // jsonPath.getString("find {it.name == 'BufferPool_used_memory_direct'}.name");
+
+    Map<String,String> directPool = jsonPath.getMap("find {it.name == 'BufferPool_used_memory_direct'}");
+    assert directPool.get("displayName").equals("BufferPool_used_memory_direct");
+    assert directPool.get("description").equals("The memory used by the pool: direct");
   }
 
   @Test

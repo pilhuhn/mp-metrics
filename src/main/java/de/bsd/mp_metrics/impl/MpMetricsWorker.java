@@ -26,7 +26,7 @@ import javax.ws.rs.Produces;
 public class MpMetricsWorker {
 
     private static final String APPLICATION = "application";
-    private static final String[] bases = {"base","vendor", APPLICATION};
+    private static final String[] bases = {"base","vendor", "integration", APPLICATION};
     MBeanServer mbs;
 
     @Inject
