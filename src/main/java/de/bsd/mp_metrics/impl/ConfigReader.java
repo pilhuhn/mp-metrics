@@ -56,6 +56,10 @@ public class ConfigReader {
 
 
   public static void main(String... args) {
+    if (args.length==0) {
+      System.err.println("Please specify a config file");
+      System.exit(1);
+    }
     ConfigReader cr = new ConfigReader();
     Metadata config = cr.readConfig(args[0]);
     System.out.println(config.getBase());
