@@ -9,6 +9,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
@@ -27,7 +28,7 @@ import org.jboss.logging.Logger;
 @ApplicationScoped
 public class MpMetricApplication extends Application {
 
-    Logger log = Logger.getLogger(this.getClass().getName());
+    private Logger log = Logger.getLogger(this.getClass().getName());
 
 
     public MpMetricApplication() {
@@ -51,9 +52,10 @@ public class MpMetricApplication extends Application {
             config = cr.readConfig(mappingFile);
         }
 
-        postProcessConfig(config);
+        ExtMetadata superConfig = flattenIntegrations(config);
+        postProcessConfig(superConfig);
 
-        ConfigHolder.getInstance().setConfig(config);
+        ConfigHolder.getInstance().setConfig(superConfig);
 
         // Register metrics
         DemoBean.registerMetricsForDemoBean();
@@ -61,16 +63,64 @@ public class MpMetricApplication extends Application {
 
     }
 
+    /**
+     * The integration sub-space has a format where metrics are grouped
+     * below subsystems as e.g.
+     * <pre>
+     integration:
+       servlet:
+       - name: "Servlet bla %s"
+         description: Bla for servlet %s
+       ft:
+       - name: "ftbla"
+         description: Bla for ft %s
+     * </pre>
+     * with two subsystems of 'servlet' and 'ft'.
+     *
+     * Flattening now takes the subsystem and creates
+     * entries for its metrics with the subsystem name prefixed
+     *
+     * @param config The configuration read in from the config file
+     * @return a Flattened config
+     */
+    private ExtMetadata flattenIntegrations(Metadata config) {
+        List<MetadataEntry> out = new ArrayList<>();
+        ExtMetadata sm = new ExtMetadata(config);
+
+        Map<String, List<Map<String, Object>>> map = config.getIntegration();
+        for (String key : map.keySet()) {
+            List<Map<String,Object>> entries = map.get(key);
+            for (Map entry : entries) {
+                try {
+                    MetadataEntry me = new MetadataEntry(entry);
+                    me.setName(key + "_" + me.getName());
+                    out.add(me);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        sm.setIntegrations(out);
+
+        return sm;
+    }
+
     private void postProcessConfig(Metadata config) {
         final String[] bases = {"base","vendor", "integration" };
 
         for (String base : bases) {
             List<MetadataEntry> entries = config.get(base);
-            processMetadataEntries(entries);
+            expandMultiValueEntries(entries);
         }
     }
 
-    private void processMetadataEntries(List<MetadataEntry> entries) {
+    /**
+     * We need to expand entries that are marked with the <b>multi</b> flag
+     * into the actual MBeans. This is done by replacing a placeholder of <b>%s</b>
+     * in the name and MBean name with the real Mbean key-value.
+     * @param entries
+     */
+    private void expandMultiValueEntries(List<MetadataEntry> entries) {
         List<MetadataEntry> result = new ArrayList<>();
         List<MetadataEntry> toBeRemoved = new ArrayList<>(entries.size());
         MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();

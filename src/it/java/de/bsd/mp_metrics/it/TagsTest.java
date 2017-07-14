@@ -17,6 +17,8 @@
 package de.bsd.mp_metrics.it;
 
 import de.bsd.mp_metrics.Tag;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.Test;
 
 /**
@@ -52,7 +54,6 @@ public class TagsTest {
     assert tag.getValue().equals("b");
   }
 
-
   @Test
   public void testParseInvalid() {
     try {
@@ -62,6 +63,16 @@ public class TagsTest {
     catch (IllegalArgumentException iae) {
       assert true;
     }
+  }
 
+  @Test
+  public void testFromMap() throws Exception {
+    Map<String,String> map = new HashMap<>(2);
+    map.put("key","myKey");
+    map.put("value","myValue");
+    Tag t = new Tag(map);
+
+    assert t.getKey().equals("myKey");
+    assert t.getValue().equals("myValue");
   }
 }

@@ -59,6 +59,7 @@ public class Main {
     deployment.addClass(ConfigHolder.class);
     deployment.addClass(ConfigReader.class);
     deployment.addClass(Metadata.class);
+    deployment.addClass(ExtMetadata.class);
     deployment.addClass(MetadataEntry.class);
     deployment.addClass(ApplicationMetrics.class);
     deployment.addClass(MpMUnit.class);

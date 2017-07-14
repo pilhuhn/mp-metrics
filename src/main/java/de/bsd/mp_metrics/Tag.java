@@ -16,6 +16,8 @@
  */
 package de.bsd.mp_metrics;
 
+import java.util.Map;
+
 /**
  * @author hrupp
  */
@@ -42,6 +44,10 @@ public class Tag {
   public Tag(String key, String value) {
     this.key = key.trim();
     this.value = value.trim();
+  }
+
+  public Tag(Map<String, String> tag) {
+    this(tag.get("key"),tag.get("value"));
   }
 
   public String getKey() {
@@ -76,5 +82,14 @@ public class Tag {
     int result = key.hashCode();
     result = 31 * result + value.hashCode();
     return result;
+  }
+
+  @Override
+  public String toString() {
+    final StringBuilder sb = new StringBuilder("Tag{");
+    sb.append("key='").append(key).append('\'');
+    sb.append(", value='").append(value).append('\'');
+    sb.append('}');
+    return sb.toString();
   }
 }

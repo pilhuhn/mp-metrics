@@ -39,13 +39,26 @@ vendor:
     type: "gauge"
     unit: "byte"
 
-
-# This next entry for servlet is bogus so far and does not
-# produce a result
+# These following entries are bogus and do not
+# produce a result. They are only for documentation
+# of the data structure
 integration:
-  - name: "servlet:%s"
-    mbean: "bla:%s"
-    description: "Stats for Servlet %s"
+  servlet:
+  - name: "Servlet bla %s"
+    description: Bla for servlet %s
+    type: counter
+    unit: byte
     multi: true
+    mbean: javax.servlet:name=%s/MemoryUsed
+    tags:
+      - key: "domain"
+        value: "memory"
+  ft:
+  - name: "ftbla"
+    description: Bla for ft %s
+    type: counter
+    unit: byte
+    multi: true
+    mbean: "java.nio:type=BufferPool,name=%s/MemoryUsed"
 
 

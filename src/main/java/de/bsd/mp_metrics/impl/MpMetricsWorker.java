@@ -171,6 +171,7 @@ public class MpMetricsWorker {
         for (MetadataEntry entry : metadata) {
             Number value;
             String key = entry.getName();
+            try {
             if (APPLICATION.equals(sub)) {
                 value = applicationMetric.getValue(key);
             }
@@ -178,6 +179,11 @@ public class MpMetricsWorker {
                 value = getValue(entry.getMbean());
             }
             results.put(key, value);
+            }
+            catch (Exception ex) {
+                System.err.println("Error for " + sub + "/" + entry.getName() + ": " + ex.getMessage() + "\nCause " + ex
+                    .getCause());
+            }
         }
         return results;
     }
@@ -229,6 +235,9 @@ public class MpMetricsWorker {
      */
     private Number getValue(String mbeanExpression) {
 
+        if (mbeanExpression==null) {
+            throw new IllegalArgumentException("MBean Expression is null");
+        }
         if (!mbeanExpression.contains("/")) {
             throw new NotFoundException(mbeanExpression);
         }

@@ -22,6 +22,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -116,6 +117,24 @@ public class MetadataEntry {
     this.type = type;
     this.unit = unit;
     addTags(tags);
+  }
+
+  public MetadataEntry(Map<String,Object>in) {
+    this();
+    this.name= (String) in.get("name");
+    this.description= (String) in.get("description");
+    this.displayName = (String) in.get("displayName");
+    this.setType((String) in.get("type"));
+    this.setUnit((String) in.get("unit"));
+    this.setMbean((String) in.get("mbean"));
+    this.setMulti(in.get("multi")==Boolean.TRUE);
+    if (in.keySet().contains("tags")) {
+      List<Map<String,String>> tagMap = (List<Map<String, String>>) in.get("tags");
+      for (Map<String,String> aTag : tagMap) {
+        Tag t = new Tag(aTag);
+        this.tags.add(t);
+      }
+    }
   }
 
   public String getName() {

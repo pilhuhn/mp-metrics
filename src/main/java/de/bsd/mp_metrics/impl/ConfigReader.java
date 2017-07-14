@@ -22,6 +22,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import org.jboss.logging.Logger;
 import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.parser.ParserException;
 
 /**
  * @author hrupp
@@ -41,6 +42,8 @@ public class ConfigReader {
       return readConfig(configStream);
     } catch (FileNotFoundException e) {
       log.warn("No configuration found");
+    } catch (ParserException pe) {
+      log.error(pe);
     }
     return null;
   }
@@ -62,6 +65,9 @@ public class ConfigReader {
     }
     ConfigReader cr = new ConfigReader();
     Metadata config = cr.readConfig(args[0]);
-    System.out.println(config.getBase());
+    if (config!=null) {
+      System.out.println(config.getBase());
+      System.out.println(config.getIntegration());
+    }
   }
 }

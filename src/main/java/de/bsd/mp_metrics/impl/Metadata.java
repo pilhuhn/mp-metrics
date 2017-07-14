@@ -20,7 +20,10 @@ import de.bsd.mp_metrics.ApplicationMetrics;
 import de.bsd.mp_metrics.MetadataEntry;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Class holding the medatata for base, vendor and applications
@@ -30,7 +33,7 @@ public class Metadata {
 
   List<MetadataEntry> base;
   List<MetadataEntry> vendor;
-  List<MetadataEntry> integration;
+  Map<String,List<Map<String,Object>>> integration;
   List<MetadataEntry> application;
 
   public List<MetadataEntry> getBase() {
@@ -55,14 +58,14 @@ public class Metadata {
     this.vendor = vendor;
   }
 
-  public List<MetadataEntry> getIntegration() {
+  public Map<String, List<Map<String,Object>>> getIntegration() {
     if (integration==null) {
-      integration = new ArrayList<>(1);
+      integration = new HashMap(1);
     }
     return integration;
   }
 
-  public void setIntegration(List<MetadataEntry> integration) {
+  public void setIntegration(Map<String, List<Map<String, Object>>> integration) {
     this.integration = integration;
   }
 
@@ -74,7 +77,7 @@ public class Metadata {
     switch (domain) {
       case "base": return getBase();
       case "vendor" : return getVendor();
-      case "integration": return getIntegration();
+//      case "integration": return getIntegration();
       case "application" : return getApplication();
     }
     return Collections.emptyList();
