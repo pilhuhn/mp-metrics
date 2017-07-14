@@ -149,7 +149,12 @@ public class MpMetricApplication extends Application {
                     Set<ObjectName> objNames = mbs.queryNames(objectName, null);
                     for (ObjectName oName : objNames) {
                         String keyValue = oName.getKeyPropertyList().get(keyHolder);
-                        String newName = entry.getName().replace("%s",keyValue);
+                        String newName = entry.getName();
+                        if (!newName.contains("%s")) {
+                            log.warn("Name [" + newName + "] did not contain a %s, no replacement will be done, check" +
+                                         " the configuration");
+                        }
+                        newName = newName.replace("%s",keyValue);
                         String newDisplayName = entry.getDisplayName().replace("%s",keyValue);
                         String newDescription = entry.getDescription().replace("%s",keyValue);
                         MetadataEntry newEntry = new MetadataEntry(newName, newDisplayName, newDescription,

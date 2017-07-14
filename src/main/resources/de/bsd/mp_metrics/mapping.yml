@@ -44,7 +44,7 @@ vendor:
 # of the data structure
 integration:
   servlet:
-  - name: "Servlet bla %s"
+  - name: "Servlet_bla_%s"
     description: Bla for servlet %s
     type: counter
     unit: byte
@@ -54,7 +54,7 @@ integration:
       - key: "domain"
         value: "memory"
   ft:
-  - name: "ftbla"
+  - name: "ftbla_%s"
     description: Bla for ft %s
     type: counter
     unit: byte
