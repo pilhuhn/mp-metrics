@@ -93,7 +93,7 @@ public class MpMetricApplication extends Application {
             for (Map entry : entries) {
                 try {
                     MetadataEntry me = new MetadataEntry(entry);
-                    me.setName(key + "_" + me.getName());
+                    me.setName(key + ":" + me.getName());
                     out.add(me);
                 } catch (Exception e) {
                     e.printStackTrace();
