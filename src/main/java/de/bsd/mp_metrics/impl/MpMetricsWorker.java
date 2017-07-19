@@ -2,6 +2,7 @@ package de.bsd.mp_metrics.impl;
 
 import de.bsd.mp_metrics.ApplicationMetrics;
 import de.bsd.mp_metrics.MetadataEntry;
+import de.bsd.mp_metrics.MpMUnit;
 import java.lang.management.ManagementFactory;
 import java.util.HashMap;
 import java.util.List;
@@ -212,8 +213,8 @@ public class MpMetricsWorker {
     }
 
     private void getPromValueLine(StringBuilder builder, MetadataEntry entry, String name, Number value) {
-        String sanitizedName = name.replace('-', '_');
-        builder.append(sanitizedName);
+        String metricName = getPrometheusMetricName(entry, name);
+        builder.append(metricName);
         // Add tags
         String tags=entry.getTagsAsString();
         if (tags!=null && !tags.isEmpty()) {
@@ -224,8 +225,21 @@ public class MpMetricsWorker {
 
     private void getPromTypeLine(StringBuilder builder, MetadataEntry entry, String name) {
 
-        String sanitizedName = name.replace('-', '_');
-        builder.append("# TYPE ").append(sanitizedName).append(" ").append(entry.getType()).append("\n");
+        String metricName = getPrometheusMetricName(entry, name);
+        builder.append("# TYPE ").append(metricName).append(" ").append(entry.getType()).append("\n");
+    }
+
+    /*
+     * Create the Prometheus metric name by sanitizing some characters and then attaching the unit if
+     * it is not 'none'
+     */
+    private String getPrometheusMetricName(MetadataEntry entry, String name) {
+        String out = name.replace('-', '_').replace('.', '_');
+        if (!entry.getUnitRaw().equals(MpMUnit.NONE)) {
+            out = out + "_" + entry.getUnit();
+        }
+
+        return out;
     }
 
     /**
