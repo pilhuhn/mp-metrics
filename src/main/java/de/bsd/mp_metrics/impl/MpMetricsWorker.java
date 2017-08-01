@@ -235,11 +235,20 @@ public class MpMetricsWorker {
      */
     private String getPrometheusMetricName(MetadataEntry entry, String name) {
         String out = name.replace('-', '_').replace('.', '_');
+        out = decamelize(out);
         if (!entry.getUnitRaw().equals(MpMUnit.NONE)) {
-            out = out + "_" + entry.getUnit();
+            out = out + "_" + entry.getUnit(); // TODO scale to base unit
         }
 
         return out;
+    }
+
+    /*
+     * Turn a camelCase metric name into a snake_case one like what
+     * Prometheus wants.
+     */
+    private String decamelize(String in) {
+        return in.replaceAll("(.)(\\p{Upper})", "$1_$2").toLowerCase();
     }
 
     /**

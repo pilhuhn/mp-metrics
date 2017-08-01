@@ -102,7 +102,7 @@ public class MpMetricsIT  {
         .statusCode(200)
         .and().contentType(MpMetricsIT.APPLICATION_JSON)
         .and()
-        .body(containsString("total-started-thread-count"));
+        .body(containsString("totalStartedThreadCount"));
   }
 
   @Test
@@ -122,12 +122,12 @@ public class MpMetricsIT  {
   public void testBaseAttributeJson() {
     given()
         .header("Accept",APPLICATION_JSON)
-    .when().get("http://localhost:8080/metrics/base/total-started-thread-count")
+    .when().get("http://localhost:8080/metrics/base/totalStartedThreadCount")
         .then()
         .statusCode(200)
         .and().contentType(MpMetricsIT.APPLICATION_JSON)
         .and()
-        .body(containsString("total-started-thread-count"));
+        .body(containsString("totalStartedThreadCount"));
   }
 
 
@@ -135,7 +135,7 @@ public class MpMetricsIT  {
   public void testBaseAttributePrometheus() {
     given()
             .header("Accept","text/plain")
-    .when().get("http://localhost:8080/metrics/base/total-started-thread-count")
+    .when().get("http://localhost:8080/metrics/base/totalStartedThreadCount")
         .then()
         .statusCode(200)
         .and().contentType("text/plain")
@@ -146,11 +146,11 @@ public class MpMetricsIT  {
 
   @Test
   public void testVendor() {
-    when().get("http://localhost:8080/metrics/base")
+    when().get("http://localhost:8080/metrics/vendor")
         .then()
         .contentType(MpMetricsIT.APPLICATION_JSON)
         .and()
-        .body(containsString("total-started-thread-count"));
+        .body(containsString("mscLoadedModules"));
 
   }
 
@@ -164,7 +164,7 @@ public class MpMetricsIT  {
     .options("http://localhost:8080/metrics/vendor")
         .then().statusCode(200)
         .and().contentType(MpMetricsIT.APPLICATION_JSON)
-        .and().body("[0].name", is("msc-loaded-modules"));
+        .and().body("[0].name", is("mscLoadedModules"));
   }
 
   @Test
