@@ -27,49 +27,53 @@ import java.util.EnumSet;
 @SuppressWarnings("unused")
 public enum MpMUnit {
   /** Dummy to say that this has no unit */
-  NONE ("none"),
+  NONE ("none", Family.NONE, 1),
 
   /** A single Bit. Not defined by SI, but by IEC 60027 */
-  BIT("bit"),
+  BIT("bit", Family.BIT, 1),
   /** 1000 {@link #BIT} */
-  KILOBIT("kilobit"),
+  KILOBIT("kilobit", Family.BIT, 1_000),
   /** 1000 {@link #KIBIBIT} */
-  MEGABIT("megabit"),
+  MEGABIT("megabit", Family.BIT, 1_000_000),
   /** 1000 {@link #MEGABIT} */
-  GIGABIT("gigabit"),
+  GIGABIT("gigabit", Family.BIT, 1_000_000_000),
   /** 1024 {@link #BIT} */
-  KIBIBIT("kibibit"),
+  KIBIBIT("kibibit", Family.BIT, 1_024),
   /** 1024 {@link #KIBIBIT}  */
-  MEBIBIT("mebibit"),
+  MEBIBIT("mebibit", Family.BIT, 1_024 * 1_024),
   /** 1024 {@link #MEBIBIT} */
-  GIBIBIT("gibibit"), /* 1024 mebibit */
+  GIBIBIT("gibibit", Family.BIT, 1_024 * 1_024 * 1_024), /* 1024 mebibit */
 
   /** 8 {@link #BIT} */
-  BYTE ("byte"),
+  BYTE ("byte", Family.BYTE, 1),
   /** 1024 {@link #BYTE} */
-  KILO_BYTE ("kbyte"), // 1024 bytes
+  KILO_BYTE ("kbyte", Family.BYTE, 1_024), // 1024 bytes
   /** 1024 {@link #KILO_BYTE} */
-  MEGA_BYTE ("mbyte"), // 1024 kilo bytes
+  MEGA_BYTE ("mbyte", Family.BYTE, 1_024 * 1_024), // 1024 kilo bytes
   /** 1024 {@link #MEGA_BYTE} */
-  GIGA_BYTE("gbyte"),
+  GIGA_BYTE("gbyte", Family.BYTE, 1_024 * 1_024 * 1_024),
 
-  NANOSECONDS("ns"),
-  MICROSECONDS("us"),
-  MILLISECOND("ms"),
-  SECONDS("s"),
-  MINUTES("m"),
-  HOURS("h"),
-  DAYS("d"),
+  NANOSECONDS("ns", Family.TIME, 1d/1_000_000),
+  MICROSECONDS("us", Family.TIME, 1d/1_000_000),
+  MILLISECOND("ms", Family.TIME, 1d/1000),
+  SECONDS("s", Family.TIME, 1),
+  MINUTES("m", Family.TIME, 60),
+  HOURS("h", Family.TIME, 3600),
+  DAYS("d", Family.TIME, 86400),
 
-  PERCENT("%")
+  PERCENT("%", Family.PERCENT, 1)
 
   ;
 
 
   private final String name;
+  private final Family family;
+  private final double factor;
 
-  MpMUnit(String name) {
+  MpMUnit(String name, Family family, double factor) {
     this.name = name;
+    this.family = family;
+    this.factor = factor;
   }
 
   @Override
@@ -86,4 +90,48 @@ public enum MpMUnit {
     }
     throw new IllegalArgumentException(in + " is not a valid MpUnit");
   }
+
+  public static double scaleToBase(Number value, MpMUnit unitIn) {
+    if (value instanceof Integer) {
+      return (Integer)value * unitIn.factor;
+    } else if (value instanceof Long) {
+      return (Long) value * unitIn.factor;
+    } else if (value instanceof Double) {
+      return (Double) value * unitIn.factor;
+    }
+    else throw new IllegalStateException("Unknown Number type for " + value );
+  }
+
+  public static MpMUnit getBaseUnit(MpMUnit unitIn) {
+    EnumSet<MpMUnit> enumSet = EnumSet.allOf(MpMUnit.class);
+    for (MpMUnit u : enumSet) {
+      if (u.family.equals(unitIn.family) && u.factor == 1) {
+        return u;
+      }
+    }
+    throw new IllegalArgumentException(unitIn + " is not a valid MpUnit");
+  }
+
+  public static String getBaseUnitAsPrometheusString(MpMUnit in) {
+    MpMUnit base = getBaseUnit(in);
+    String out;
+    switch (base.family) {
+      case BIT:  out = "bits"; break;
+      case BYTE: out = "bytes"; break;
+      case TIME: out = "seconds"; break;
+      case PERCENT: out = "percent"; break;
+      default:
+        out = "";
+    }
+    return out;
+  }
+
+  private enum Family {
+    BIT,
+    BYTE,
+    TIME,
+    PERCENT,
+    NONE;
+  }
+
 }

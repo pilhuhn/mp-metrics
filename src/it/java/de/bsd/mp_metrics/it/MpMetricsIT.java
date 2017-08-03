@@ -24,7 +24,9 @@ import static org.hamcrest.core.Is.is;
 
 import de.bsd.mp_metrics.impl.Main;
 import io.restassured.RestAssured;
+import io.restassured.parsing.Parser;
 import io.restassured.path.json.JsonPath;
+import io.restassured.response.Response;
 import java.util.List;
 import java.util.Map;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -283,4 +285,48 @@ public class MpMetricsIT  {
         .body(containsString("\"hello\":"+count));
   }
 
+  @Test
+  public void testUnitScalingPromMetricsName() {
+
+    given()
+        .header("Accept","text/plain")
+    .when()
+        .get("http://localhost:8080/metrics/vendor/mscLoadedModulesTime")
+    .then()
+        .statusCode(200)
+        .and()
+        .body(containsString("msc_loaded_modules_time_seconds"));
+  }
+
+  @Test
+  public void testUnitScalingPromMetricsValue() {
+
+    //  get value via unscaled json
+    int val = when().get("http://localhost:8080/metrics/vendor/mscLoadedModulesTime")
+         .then().statusCode(200)
+         .extract().path("mscLoadedModulesTime");
+
+    // Now get the one fro prom-api, which is scaled to seconds
+    String response =
+    given()
+        .header("Accept","text/plain")
+    .when()
+        .get("http://localhost:8080/metrics/vendor/mscLoadedModulesTime")
+        .asString();
+
+    String[] lines = response.split("\n");
+
+    // Find the line and see if this was correctly scaled
+    // Entry data is in milliseconds and prom exports as seconds
+    // so we need to divide by 1000
+    for (String line : lines) {
+      if (line.startsWith("vendor:msc_loaded")) {
+        String[] items = line.split(" ");
+        double theVal = Double.valueOf(items[1]);
+        assert theVal == val / 1000d;
+        return;
+      }
+    }
+    throw new IllegalStateException("Should have found an entry");
+  }
 }

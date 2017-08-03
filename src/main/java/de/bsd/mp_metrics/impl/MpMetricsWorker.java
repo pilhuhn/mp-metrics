@@ -220,7 +220,8 @@ public class MpMetricsWorker {
         if (tags!=null && !tags.isEmpty()) {
             builder.append('{').append(tags).append('}');
         }
-        builder.append(" ").append(value).append('\n');
+        Number scaledValue = MpMUnit.scaleToBase(value, entry.getUnitRaw());
+        builder.append(" ").append(scaledValue).append('\n');
     }
 
     private void getPromTypeLine(StringBuilder builder, MetadataEntry entry, String name) {
@@ -237,7 +238,7 @@ public class MpMetricsWorker {
         String out = name.replace('-', '_').replace('.', '_');
         out = decamelize(out);
         if (!entry.getUnitRaw().equals(MpMUnit.NONE)) {
-            out = out + "_" + entry.getUnit(); // TODO scale to base unit
+            out = out + "_" + MpMUnit.getBaseUnitAsPrometheusString(entry.getUnitRaw());
         }
 
         return out;
