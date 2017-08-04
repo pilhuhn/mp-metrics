@@ -24,9 +24,8 @@ import static org.hamcrest.core.Is.is;
 
 import de.bsd.mp_metrics.impl.Main;
 import io.restassured.RestAssured;
-import io.restassured.parsing.Parser;
+import io.restassured.http.Header;
 import io.restassured.path.json.JsonPath;
-import io.restassured.response.Response;
 import java.util.List;
 import java.util.Map;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -46,6 +45,10 @@ import org.wildfly.swarm.jaxrs.JAXRSArchive;
 public class MpMetricsIT  {
 
   private static final String APPLICATION_JSON = "application/json";
+  private static final String TEXT_PLAIN = "text/plain";
+
+  private static final Header wantJson = new Header("Accept",APPLICATION_JSON);
+  private static final Header wantPrometheusFormat = new Header("Accept",TEXT_PLAIN);
 
   @Deployment
   public static Archive createDeployment() throws Exception {
@@ -64,7 +67,7 @@ public class MpMetricsIT  {
   @Test
   public void testListsAllJson() {
     given()
-        .header("Accept",APPLICATION_JSON)
+        .header(wantJson)
     .when()
         .get("http://localhost:8080/metrics")
         .then()
@@ -73,7 +76,7 @@ public class MpMetricsIT  {
 
     Map response =
         given()
-            .header("Accept",APPLICATION_JSON)
+            .header(wantJson)
         .when()
             .get("http://localhost:8080/metrics")
         .as(Map.class);
@@ -86,7 +89,7 @@ public class MpMetricsIT  {
   @Test
   public void testListsAllPrometheus() {
     given()
-        .header("Accept","text/plain")
+        .header(wantPrometheusFormat)
     .when()
         .get("http://localhost:8080/metrics")
         .then()
@@ -123,7 +126,7 @@ public class MpMetricsIT  {
   @Test
   public void testBaseAttributeJson() {
     given()
-        .header("Accept",APPLICATION_JSON)
+        .header(wantJson)
     .when().get("http://localhost:8080/metrics/base/totalStartedThreadCount")
         .then()
         .statusCode(200)
@@ -162,7 +165,7 @@ public class MpMetricsIT  {
   @Test
   public void testVendorMetadata() {
     given()
-            .header("Accept",APPLICATION_JSON)
+            .header(wantJson)
     .options("http://localhost:8080/metrics/vendor")
         .then().statusCode(200)
         .and().contentType(MpMetricsIT.APPLICATION_JSON)
@@ -172,7 +175,7 @@ public class MpMetricsIT  {
   @Test
   public void testVendorMetadata2() {
     given()
-            .header("Accept",APPLICATION_JSON)
+            .header(wantJson)
     .options("http://localhost:8080/metrics/vendor")
         .then().statusCode(200)
         .and().contentType(MpMetricsIT.APPLICATION_JSON)
@@ -183,7 +186,7 @@ public class MpMetricsIT  {
   public void testVendorMetadata3() {
     JsonPath jsonPath =
       given()
-              .header("Accept",APPLICATION_JSON)
+              .header(wantJson)
       .options("http://localhost:8080/metrics/vendor")
           .then().statusCode(200)
           .and().contentType(MpMetricsIT.APPLICATION_JSON)
@@ -200,7 +203,7 @@ public class MpMetricsIT  {
   @Test
   public void testApplicationMetadataOkJson() {
     given()
-        .header("Accept",APPLICATION_JSON)
+        .header(wantJson)
     .options("http://localhost:8080/metrics/application")
         .then().statusCode(200)
         .and().contentType(MpMetricsIT.APPLICATION_JSON)
@@ -234,7 +237,7 @@ public class MpMetricsIT  {
   @Test
   public void testApplicationsData() {
     given()
-        .header("Accept",APPLICATION_JSON)
+        .header(wantJson)
     .when().get("http://localhost:8080/metrics/application")
         .then().statusCode(200)
         .and().contentType(MpMetricsIT.APPLICATION_JSON)
@@ -252,7 +255,7 @@ public class MpMetricsIT  {
 
 
     given()
-          .header("Accept",APPLICATION_JSON)
+          .header(wantJson)
     .when().get("http://localhost:8080/metrics/application/hello")
         .then().statusCode(200)
         .and().contentType(MpMetricsIT.APPLICATION_JSON)

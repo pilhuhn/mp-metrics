@@ -28,10 +28,10 @@ public class MpMetricsWorker {
 
     private static final String APPLICATION = "application";
     private static final String[] bases = {"base","vendor", "integration", APPLICATION};
-    MBeanServer mbs;
+    private MBeanServer mbs;
 
     @Inject
-    ApplicationMetrics applicationMetric;
+    private ApplicationMetrics applicationMetric;
 
     public MpMetricsWorker() {
         mbs = ManagementFactory.getPlatformMBeanServer();
@@ -254,8 +254,8 @@ public class MpMetricsWorker {
 
     /**
      * Read a value from the MBeanServer
-     * @param mbeanExpression
-     * @return
+     * @param mbeanExpression The expression to look for
+     * @return The value of the Mbean attribute
      */
     private Number getValue(String mbeanExpression) {
 
