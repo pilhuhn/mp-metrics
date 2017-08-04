@@ -54,7 +54,7 @@ public class MPUnitsTest {
 
   @Test
   public void testScaleMegabyteToByte() {
-    MpMUnit foo = MpMUnit.MEGA_BYTE;
+    MpMUnit foo = MpMUnit.MEGABYTE;
     double out = MpMUnit.scaleToBase(1, foo);
     assert out == 1024*1024;
   }

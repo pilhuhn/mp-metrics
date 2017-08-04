@@ -47,11 +47,11 @@ public enum MpMUnit {
   /** 8 {@link #BIT} */
   BYTE ("byte", Family.BYTE, 1),
   /** 1024 {@link #BYTE} */
-  KILO_BYTE ("kbyte", Family.BYTE, 1_024), // 1024 bytes
-  /** 1024 {@link #KILO_BYTE} */
-  MEGA_BYTE ("mbyte", Family.BYTE, 1_024 * 1_024), // 1024 kilo bytes
-  /** 1024 {@link #MEGA_BYTE} */
-  GIGA_BYTE("gbyte", Family.BYTE, 1_024 * 1_024 * 1_024),
+  KILOBYTE("kbyte", Family.BYTE, 1_024), // 1024 bytes
+  /** 1024 {@link #KILOBYTE} */
+  MEGABYTE("mbyte", Family.BYTE, 1_024 * 1_024), // 1024 kilo bytes
+  /** 1024 {@link #MEGABYTE} */
+  GIGABYTE("gbyte", Family.BYTE, 1_024 * 1_024 * 1_024),
 
   NANOSECOND("ns", Family.TIME, 1d/1_000_000),
   MICROSECOND("us", Family.TIME, 1d/1_000_000),
