@@ -28,32 +28,32 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" scope="PROVIDED" name="JBoss 7.0.2.Final" level="application_server_libraries" />
-    <orderEntry type="library" name="Maven: org.wildfly.swarm:jaxrs:2017.4.0" level="project" />
-    <orderEntry type="library" name="Maven: org.wildfly.swarm:container:2017.4.0" level="project" />
-    <orderEntry type="library" name="Maven: org.wildfly.swarm:spi:2017.4.0" level="project" />
+    <orderEntry type="library" name="Maven: org.wildfly.swarm:jaxrs:2017.8.1" level="project" />
+    <orderEntry type="library" name="Maven: org.wildfly.swarm:container:2017.8.1" level="project" />
+    <orderEntry type="library" name="Maven: org.wildfly.swarm:spi:2017.8.1" level="project" />
     <orderEntry type="library" name="Maven: org.jboss:jandex:2.0.2.Final" level="project" />
-    <orderEntry type="library" name="Maven: org.wildfly.swarm:bootstrap:2017.4.0" level="project" />
+    <orderEntry type="library" name="Maven: org.wildfly.swarm:bootstrap:2017.8.1" level="project" />
     <orderEntry type="library" name="Maven: org.jboss.modules:jboss-modules:1.5.2.Final" level="project" />
-    <orderEntry type="library" name="Maven: org.wildfly.swarm:config-api:1.0.3.Final" level="project" />
-    <orderEntry type="library" name="Maven: org.wildfly.swarm:config-api-runtime:1.0.3.Final" level="project" />
-    <orderEntry type="library" name="Maven: org.wildfly.swarm:undertow:2017.4.0" level="project" />
-    <orderEntry type="library" name="Maven: org.wildfly.swarm:io:2017.4.0" level="project" />
-    <orderEntry type="library" name="Maven: org.wildfly.swarm:request-controller:2017.4.0" level="project" />
-    <orderEntry type="library" name="Maven: org.jboss.shrinkwrap.descriptors:shrinkwrap-descriptors-api-jboss:2.0.0-alpha-9" level="project" />
-    <orderEntry type="library" name="Maven: org.jboss.shrinkwrap.descriptors:shrinkwrap-descriptors-impl-jboss:2.0.0-alpha-9" level="project" />
-    <orderEntry type="library" name="Maven: org.jboss.shrinkwrap.descriptors:shrinkwrap-descriptors-api-javaee:2.0.0-alpha-9" level="project" />
-    <orderEntry type="library" name="Maven: org.jboss.shrinkwrap.descriptors:shrinkwrap-descriptors-api-base:2.0.0-alpha-9" level="project" />
-    <orderEntry type="library" name="Maven: org.jboss.shrinkwrap.descriptors:shrinkwrap-descriptors-impl-javaee:2.0.0-alpha-9" level="project" />
-    <orderEntry type="library" name="Maven: org.jboss.shrinkwrap.descriptors:shrinkwrap-descriptors-impl-base:2.0.0-alpha-9" level="project" />
+    <orderEntry type="library" name="Maven: org.wildfly.swarm:config-api:1.1.0.Final" level="project" />
+    <orderEntry type="library" name="Maven: org.wildfly.swarm:config-api-runtime:1.1.0.Final" level="project" />
+    <orderEntry type="library" name="Maven: org.wildfly.swarm:undertow:2017.8.1" level="project" />
+    <orderEntry type="library" name="Maven: org.wildfly.swarm:io:2017.8.1" level="project" />
+    <orderEntry type="library" name="Maven: org.wildfly.swarm:request-controller:2017.8.1" level="project" />
+    <orderEntry type="library" name="Maven: org.jboss.shrinkwrap.descriptors:shrinkwrap-descriptors-api-jboss:2.0.0" level="project" />
+    <orderEntry type="library" name="Maven: org.jboss.shrinkwrap.descriptors:shrinkwrap-descriptors-impl-jboss:2.0.0" level="project" />
+    <orderEntry type="library" name="Maven: org.jboss.shrinkwrap.descriptors:shrinkwrap-descriptors-api-javaee:2.0.0" level="project" />
+    <orderEntry type="library" name="Maven: org.jboss.shrinkwrap.descriptors:shrinkwrap-descriptors-api-base:2.0.0" level="project" />
+    <orderEntry type="library" name="Maven: org.jboss.shrinkwrap.descriptors:shrinkwrap-descriptors-impl-javaee:2.0.0" level="project" />
+    <orderEntry type="library" name="Maven: org.jboss.shrinkwrap.descriptors:shrinkwrap-descriptors-impl-base:2.0.0" level="project" />
     <orderEntry type="library" name="Maven: org.jboss.spec.javax.servlet:jboss-servlet-api_3.1_spec:1.0.0.Final" level="project" />
     <orderEntry type="library" name="Maven: org.jboss.spec.javax.websocket:jboss-websocket-api_1.1_spec:1.1.1.Final" level="project" />
     <orderEntry type="library" name="Maven: io.undertow:undertow-servlet:1.4.11.Final" level="project" />
     <orderEntry type="library" name="Maven: io.undertow:undertow-core:1.4.11.Final" level="project" />
     <orderEntry type="library" name="Maven: org.jboss.xnio:xnio-api:3.3.6.Final" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.jboss.xnio:xnio-nio:3.3.6.Final" level="project" />
-    <orderEntry type="library" name="Maven: org.wildfly.swarm:security:2017.4.0" level="project" />
+    <orderEntry type="library" name="Maven: org.wildfly.swarm:security:2017.8.1" level="project" />
     <orderEntry type="library" name="Maven: org.jboss.spec.javax.annotation:jboss-annotations-api_1.2_spec:1.0.0.Final" level="project" />
-    <orderEntry type="library" name="Maven: org.wildfly.swarm:jaxrs-cdi:2017.4.0" level="project" />
+    <orderEntry type="library" name="Maven: org.wildfly.swarm:jaxrs-cdi:2017.8.1" level="project" />
     <orderEntry type="library" name="Maven: org.ow2.asm:asm-all:5.0.4" level="project" />
     <orderEntry type="library" name="Maven: org.jboss.spec.javax.ws.rs:jboss-jaxrs-api_2.0_spec:1.0.0.Final" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.7.4" level="project" />
@@ -62,28 +62,28 @@
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:2.7.4" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.jaxrs:jackson-jaxrs-base:2.7.4" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.7.4" level="project" />
-    <orderEntry type="library" name="Maven: org.wildfly.swarm:meta-spi:2017.4.0" level="project" />
-    <orderEntry type="library" name="Maven: org.wildfly.swarm:logging:2017.4.0" level="project" />
+    <orderEntry type="library" name="Maven: org.wildfly.swarm:meta-spi:2017.8.1" level="project" />
+    <orderEntry type="library" name="Maven: org.wildfly.swarm:logging:2017.8.1" level="project" />
     <orderEntry type="library" name="Maven: org.jboss.logging:jboss-logging:3.3.0.Final" level="project" />
-    <orderEntry type="library" name="Maven: org.wildfly.swarm:cdi:2017.4.0" level="project" />
-    <orderEntry type="library" name="Maven: org.wildfly.swarm:cdi-config:2017.4.0" level="project" />
-    <orderEntry type="library" name="Maven: org.wildfly.swarm:bean-validation:2017.4.0" level="project" />
+    <orderEntry type="library" name="Maven: org.wildfly.swarm:cdi:2017.8.1" level="project" />
+    <orderEntry type="library" name="Maven: org.wildfly.swarm:cdi-config:2017.8.1" level="project" />
+    <orderEntry type="library" name="Maven: org.wildfly.swarm:bean-validation:2017.8.1" level="project" />
     <orderEntry type="library" name="Maven: javax.validation:validation-api:1.1.0.Final" level="project" />
-    <orderEntry type="library" name="Maven: org.wildfly.swarm:ee:2017.4.0" level="project" />
-    <orderEntry type="library" name="Maven: org.wildfly.swarm:naming:2017.4.0" level="project" />
+    <orderEntry type="library" name="Maven: org.wildfly.swarm:ee:2017.8.1" level="project" />
+    <orderEntry type="library" name="Maven: org.wildfly.swarm:naming:2017.8.1" level="project" />
     <orderEntry type="library" name="Maven: org.jboss.spec.javax.enterprise.concurrent:jboss-concurrency-api_1.0_spec:1.0.0.Final" level="project" />
     <orderEntry type="library" name="Maven: org.jboss.spec.javax.interceptor:jboss-interceptors-api_1.2_spec:1.0.0.Final" level="project" />
     <orderEntry type="library" name="Maven: org.jboss.spec.javax.el:jboss-el-api_3.0_spec:1.0.7.Final" level="project" />
     <orderEntry type="library" name="Maven: org.glassfish:javax.el-impl:3.0.1-b08-jbossorg-1" level="project" />
-    <orderEntry type="library" name="Maven: org.wildfly.swarm:transactions:2017.4.0" level="project" />
+    <orderEntry type="library" name="Maven: org.wildfly.swarm:transactions:2017.8.1" level="project" />
     <orderEntry type="library" name="Maven: org.jboss.spec.javax.transaction:jboss-transaction-api_1.2_spec:1.0.0.Final" level="project" />
     <orderEntry type="library" name="Maven: org.jboss.narayana.jts:narayana-jts-idlj:5.3.3.Final" level="project" />
     <orderEntry type="library" name="Maven: org.jboss.openjdk-orb:openjdk-orb:8.0.4.Final" level="project" />
     <orderEntry type="library" name="Maven: javax.enterprise:cdi-api:1.2" level="project" />
     <orderEntry type="library" name="Maven: javax.inject:javax.inject:1" level="project" />
     <orderEntry type="library" name="Maven: org.yaml:snakeyaml:1.17" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.wildfly.swarm:arquillian:2017.4.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.wildfly.swarm:arquillian-daemon:2017.4.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.wildfly.swarm:arquillian:2017.8.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.wildfly.swarm:arquillian-daemon:2017.8.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.wildfly.core:wildfly-server:2.2.1.Final" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.wildfly.core:wildfly-controller:2.2.1.Final" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.wildfly.core:wildfly-controller-client:2.2.1.Final" level="project" />
@@ -113,8 +113,8 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.jboss:jboss-vfs:3.2.12.Final" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.wildfly.common:wildfly-common:1.1.0.Final" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.jboss.msc:jboss-msc:1.2.6.Final" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.wildfly.swarm:arquillian-adapter:2017.4.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.wildfly.swarm:arquillian-resolver:2017.4.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.wildfly.swarm:arquillian-adapter:2017.8.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.wildfly.swarm:arquillian-resolver:2017.8.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.jboss.shrinkwrap.resolver:shrinkwrap-resolver-impl-maven:2.2.4" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.jboss.shrinkwrap.resolver:shrinkwrap-resolver-api-maven:2.2.4" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.jboss.shrinkwrap.resolver:shrinkwrap-resolver-api:2.2.4" level="project" />
@@ -145,11 +145,11 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.apache.maven.wagon:wagon-http-shared:2.6" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.jsoup:jsoup:1.7.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: commons-io:commons-io:2.2" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.wildfly.swarm:fraction-metadata:2017.4.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.wildfly.swarm:fraction-metadata:2017.8.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: com.eclipsesource.minimal-json:minimal-json:0.9.4" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.wildfly.swarm:tools:2017.4.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.wildfly.swarm:tools:2017.8.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: net.lingala.zip4j:zip4j:1.3.2" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.wildfly.swarm:msc:2017.4.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.wildfly.swarm:msc:2017.8.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.jboss.arquillian.container:arquillian-container-spi:1.1.12.Final" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.jboss.arquillian.testenricher:arquillian-testenricher-cdi:1.1.12.Final" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.jboss.arquillian.testenricher:arquillian-testenricher-ejb:1.1.12.Final" level="project" />
@@ -170,13 +170,13 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.jboss.arquillian.test:arquillian-test-impl-base:1.1.12.Final" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.jboss.arquillian.container:arquillian-container-impl-base:1.1.12.Final" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.jboss.arquillian.config:arquillian-config-api:1.1.12.Final" level="project" />
-    <orderEntry type="library" name="Maven: org.jboss.shrinkwrap.descriptors:shrinkwrap-descriptors-spi:2.0.0-alpha-9" level="project" />
+    <orderEntry type="library" name="Maven: org.jboss.shrinkwrap.descriptors:shrinkwrap-descriptors-spi:2.0.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.jboss.arquillian.container:arquillian-container-test-impl-base:1.1.12.Final" level="project" />
     <orderEntry type="library" name="Maven: org.jboss.shrinkwrap:shrinkwrap-impl-base:1.2.6" level="project" />
     <orderEntry type="library" name="Maven: org.jboss.shrinkwrap:shrinkwrap-spi:1.2.6" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: io.rest-assured:rest-assured:3.0.2" level="project" />
-    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy:2.4.6" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.codehaus.groovy:groovy-xml:2.4.6" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: io.rest-assured:rest-assured:3.0.3" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy:2.4.9" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.codehaus.groovy:groovy-xml:2.4.9" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.apache.httpcomponents:httpclient:4.5.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.apache.httpcomponents:httpcore:4.4.4" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: commons-logging:commons-logging:1.2" level="project" />
@@ -185,10 +185,10 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest-core:1.3" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest-library:1.3" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.ccil.cowan.tagsoup:tagsoup:1.2.1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: io.rest-assured:xml-path:3.0.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: io.rest-assured:xml-path:3.0.3" level="project" />
     <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.4" level="project" />
-    <orderEntry type="library" name="Maven: io.rest-assured:json-path:3.0.2" level="project" />
-    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-json:2.4.6" level="project" />
-    <orderEntry type="library" name="Maven: io.rest-assured:rest-assured-common:3.0.2" level="project" />
+    <orderEntry type="library" name="Maven: io.rest-assured:json-path:3.0.3" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-json:2.4.9" level="project" />
+    <orderEntry type="library" name="Maven: io.rest-assured:rest-assured-common:3.0.3" level="project" />
   </component>
 </module>

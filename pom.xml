@@ -18,7 +18,8 @@
   <packaging>jar</packaging>
 
   <properties>
-    <version.wildfly-swarm>2017.4.0</version.wildfly-swarm>
+    <version.wildfly-swarm>2017.8.1</version.wildfly-swarm>
+    <version.rest-assured>3.0.3</version.rest-assured>
 
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
@@ -259,13 +260,13 @@
     <dependency>
       <groupId>io.rest-assured</groupId>
       <artifactId>rest-assured</artifactId>
-      <version>3.0.2</version>
+      <version>${version.rest-assured}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
-          <groupId>io.rest-assured</groupId>
-          <artifactId>json-path</artifactId>
-          <version>3.0.2</version>
+      <groupId>io.rest-assured</groupId>
+      <artifactId>json-path</artifactId>
+      <version>${version.rest-assured}</version>
     </dependency>
 
   </dependencies>

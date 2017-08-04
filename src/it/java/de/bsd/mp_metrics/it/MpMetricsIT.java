@@ -151,7 +151,9 @@ public class MpMetricsIT  {
 
   @Test
   public void testVendor() {
-    when().get("http://localhost:8080/metrics/vendor")
+    given()
+        .header(wantJson)
+        .get("http://localhost:8080/metrics/vendor")
         .then()
         .contentType(MpMetricsIT.APPLICATION_JSON)
         .and()
