@@ -26,14 +26,14 @@ public class MPUnitsTest {
 
   @Test
   public void testScaleMinutesToSeconds() {
-    MpMUnit foo = MpMUnit.MINUTES;
+    MpMUnit foo = MpMUnit.MINUTE;
     double out = MpMUnit.scaleToBase(1, foo);
     assert out == 60;
   }
 
   @Test
   public void testScaleHoursToSeconds() {
-    MpMUnit foo = MpMUnit.HOURS;
+    MpMUnit foo = MpMUnit.HOUR;
     double out = MpMUnit.scaleToBase(3, foo);
     assert out == 3*3600;
   }
@@ -47,7 +47,7 @@ public class MPUnitsTest {
 
   @Test
   public void testScaleNanosecondsToSeconds() {
-    MpMUnit foo = MpMUnit.NANOSECONDS;
+    MpMUnit foo = MpMUnit.NANOSECOND;
     double out = MpMUnit.scaleToBase(3, foo);
     assert out == 0.000_003 : "Out was " + out;
   }
@@ -61,9 +61,9 @@ public class MPUnitsTest {
 
   @Test
   public void testFindBaseUnit1()  {
-    MpMUnit foo = MpMUnit.HOURS;
+    MpMUnit foo = MpMUnit.HOUR;
     MpMUnit out = MpMUnit.getBaseUnit(foo);
-    assert out.equals(MpMUnit.SECONDS);
+    assert out.equals(MpMUnit.SECOND);
     String promUnit = MpMUnit.getBaseUnitAsPrometheusString(out);
     assert promUnit.equals("seconds");
   }
@@ -72,7 +72,7 @@ public class MPUnitsTest {
   public void testFindBaseUnit2()  {
     MpMUnit foo = MpMUnit.MILLISECOND;
     MpMUnit out = MpMUnit.getBaseUnit(foo);
-    assert out.equals(MpMUnit.SECONDS);
+    assert out.equals(MpMUnit.SECOND);
     String promUnit = MpMUnit.getBaseUnitAsPrometheusString(out);
     assert promUnit.equals("seconds");
   }

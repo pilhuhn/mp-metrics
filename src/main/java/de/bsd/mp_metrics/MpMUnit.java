@@ -53,13 +53,13 @@ public enum MpMUnit {
   /** 1024 {@link #MEGA_BYTE} */
   GIGA_BYTE("gbyte", Family.BYTE, 1_024 * 1_024 * 1_024),
 
-  NANOSECONDS("ns", Family.TIME, 1d/1_000_000),
-  MICROSECONDS("us", Family.TIME, 1d/1_000_000),
+  NANOSECOND("ns", Family.TIME, 1d/1_000_000),
+  MICROSECOND("us", Family.TIME, 1d/1_000_000),
   MILLISECOND("ms", Family.TIME, 1d/1000),
-  SECONDS("s", Family.TIME, 1),
-  MINUTES("m", Family.TIME, 60),
-  HOURS("h", Family.TIME, 3600),
-  DAYS("d", Family.TIME, 86400),
+  SECOND("s", Family.TIME, 1),
+  MINUTE("m", Family.TIME, 60),
+  HOUR("h", Family.TIME, 3600),
+  DAY("d", Family.TIME, 86400),
 
   PERCENT("%", Family.PERCENT, 1)
 
@@ -131,7 +131,7 @@ public enum MpMUnit {
     BYTE,
     TIME,
     PERCENT,
-    NONE;
+    NONE
   }
 
 }
