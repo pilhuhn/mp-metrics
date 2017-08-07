@@ -91,6 +91,14 @@ public enum MpMUnit {
     throw new IllegalArgumentException(in + " is not a valid MpUnit");
   }
 
+  /**
+   * Given a numeric input value and its unit, the method will scale it to
+   * the the respective value of the base unit of the family.
+   * E.g. a value of 10 and a unit of "ms" will result in 0.001 (seconds).
+   * @param value The numeric value to convert
+   * @param unitIn The input unit
+   * @return Double value of the scaled input
+   */
   public static double scaleToBase(Number value, MpMUnit unitIn) {
     if (value instanceof Integer) {
       return (Integer)value * unitIn.factor;
@@ -102,6 +110,12 @@ public enum MpMUnit {
     else throw new IllegalStateException("Unknown Number type for " + value );
   }
 
+  /**
+   * For a given unit in a family return its base unit.
+   * E.g. for time family (seconds etc) return #SECOND
+   * @param unitIn Unit to investigate
+   * @return Base unit
+   */
   public static MpMUnit getBaseUnit(MpMUnit unitIn) {
     EnumSet<MpMUnit> enumSet = EnumSet.allOf(MpMUnit.class);
     for (MpMUnit u : enumSet) {
@@ -112,6 +126,13 @@ public enum MpMUnit {
     throw new IllegalArgumentException(unitIn + " is not a valid MpUnit");
   }
 
+  /**
+   * Return the metric unit as string suitable for Prometheus.
+   * As Prometheus requires the base unit, the result is the
+   * name from the base unit of the family, in belongs to.
+   * @param in Unit
+   * @return String representation for the base unit of in
+   */
   public static String getBaseUnitAsPrometheusString(MpMUnit in) {
     MpMUnit base = getBaseUnit(in);
     String out;
