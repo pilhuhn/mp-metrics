@@ -198,6 +198,7 @@ public class MpMetricsWorker {
             String name = sub + ":" + key;
 
             getPromTypeLine(builder, entry, name);
+            getPromHelpLine(builder, entry, name);
 
             Number value;
 
@@ -228,6 +229,15 @@ public class MpMetricsWorker {
 
         String metricName = getPrometheusMetricName(entry, name);
         builder.append("# TYPE ").append(metricName).append(" ").append(entry.getType()).append("\n");
+    }
+
+    private void getPromHelpLine(StringBuilder builder, MetadataEntry entry, String name) {
+
+        String description = entry.getDescription();
+        if (description !=null && !description.isEmpty()){
+            String metricName = getPrometheusMetricName(entry, name);
+            builder.append("# HELP ").append(metricName).append(" ").append(description).append("\n");
+        }
     }
 
     /*
