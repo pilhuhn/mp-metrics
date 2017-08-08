@@ -16,16 +16,16 @@
  */
 package de.bsd.mp_metrics.it;
 
-import static io.restassured.RestAssured.given;
-import static io.restassured.RestAssured.when;
+import static com.jayway.restassured.RestAssured.given;
+import static com.jayway.restassured.RestAssured.when;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.core.Is.is;
 
+import com.jayway.restassured.response.Header;
 import de.bsd.mp_metrics.impl.Main;
-import io.restassured.RestAssured;
-import io.restassured.http.Header;
-import io.restassured.path.json.JsonPath;
+import com.jayway.restassured.RestAssured;
+import com.jayway.restassured.path.json.JsonPath;
 import java.util.List;
 import java.util.Map;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -47,7 +47,7 @@ public class MpMetricsIT  {
   private static final String APPLICATION_JSON = "application/json";
   private static final String TEXT_PLAIN = "text/plain";
 
-  private static final Header wantJson = new Header("Accept",APPLICATION_JSON);
+  private static final Header wantJson = new Header("Accept", APPLICATION_JSON);
   private static final Header wantPrometheusFormat = new Header("Accept",TEXT_PLAIN);
 
   @Deployment
