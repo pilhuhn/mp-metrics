@@ -334,4 +334,104 @@ public class MpMetricsIT  {
     }
     throw new IllegalStateException("Should have found an entry");
   }
+
+  @Test
+  public void testFilteringStartsWith() throws Exception {
+
+    String response =
+    given()
+        .header("Accept","text/plain")
+    .when()
+        .queryParam("filter","m*")
+        .get("http://localhost:8080/metrics/")
+        .asString();
+
+    String[] lines = response.split("\n");
+
+    for (String line: lines) {
+      if (line.startsWith("# ")) {
+        continue;
+      }
+      String items[] = line.split(":");
+      assert items[1].startsWith("m");
+    }
+  }
+
+  @Test
+  public void testFilteringNotStartsWith() throws Exception {
+
+    String response =
+    given()
+        .header("Accept","text/plain")
+    .when()
+        .queryParam("filter","!m*")
+        .get("http://localhost:8080/metrics/")
+        .asString();
+
+    String[] lines = response.split("\n");
+
+    for (String line: lines) {
+      if (line.startsWith("# ")) {
+        continue;
+      }
+      String items[] = line.split(":");
+      assert !(items[1].startsWith("m"));
+    }
+  }
+
+  @Test
+  public void testFilteringEndsWith() throws Exception {
+
+    String response =
+    given()
+        .header("Accept","text/plain")
+    .when()
+        .queryParam("filter","*s")
+        .get("http://localhost:8080/metrics/")
+        .asString();
+
+    String[] lines = response.split("\n");
+
+    for (String line: lines) {
+      if (line.startsWith("# ")) {
+        continue;
+      }
+      String items[] = line.split(" ");
+      String item = dePromName(items[0]);
+      assert item.endsWith("s") : line;
+    }
+  }
+
+  @Test
+  public void testFilteringNotEndsWithWith() throws Exception {
+
+    String response =
+    given()
+        .header("Accept","text/plain")
+    .when()
+        .queryParam("filter","!*s")
+        .get("http://localhost:8080/metrics/")
+        .asString();
+
+    String[] lines = response.split("\n");
+
+    for (String line: lines) {
+      if (line.startsWith("# ")) {
+        continue;
+      }
+      String items[] = line.split(" ");
+      String item= items[0];
+      item = dePromName(item);
+      assert !(item.endsWith("s")) : line;
+    }
+  }
+
+  private String dePromName(String name) {
+    String s = name;
+    s= s.replaceAll("\\{.*}","");
+    s= s.replaceAll("_bytes$","");
+    s= s.replaceAll("_seconds$","");
+
+    return s;
+  }
 }

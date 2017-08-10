@@ -17,6 +17,7 @@ import javax.ws.rs.OPTIONS;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 
 
 /**
@@ -40,20 +41,20 @@ public class MpMetricsWorker {
     @GET
     @Path("/")
     @Produces("application/json")
-    public Map<String, Map<String,Number>> getAllValuesJson() {
+    public Map<String, Map<String,Number>> getAllValuesJson(@QueryParam("filter") String filter) {
         Map<String, Map<String,Number>> results = new HashMap<>(bases.length);
         for (String subTree : bases) {
-            results.put(subTree, getValuesForSubTreeAsMap(subTree));
+            results.put(subTree, getValuesForSubTreeAsMap(subTree, filter));
         }
         return results;
     }
 
     @GET
     @Produces("text/plain")
-    public String getAllValuesPrometheus() {
+    public String getAllValuesPrometheus(@QueryParam("filter") String filter) {
         StringBuilder builder = new StringBuilder();
         for (String subTree : bases) {
-            builder.append(getValuesForSubTreeAsPromString(subTree));
+            builder.append(getValuesForSubTreeAsPromString(subTree, filter));
         }
         return builder.toString();
     }
@@ -61,19 +62,19 @@ public class MpMetricsWorker {
     @GET
     @Path("/{sub}")
     @Produces("application/json")
-    public Map<String, Number> getBaseValuesJson(@PathParam("sub")String sub) {
+    public Map<String, Number> getBaseValuesJson(@PathParam("sub")String sub, @QueryParam("filter") String filter) {
 
         validateSub(sub);
-        return getValuesForSubTreeAsMap(sub);
+        return getValuesForSubTreeAsMap(sub, filter);
     }
 
     @GET
     @Produces("text/plain")
     @Path("/{sub}")
-    public String getBaseValuesPrometheus(@PathParam("sub")String sub) {
+    public String getBaseValuesPrometheus(@PathParam("sub")String sub, @QueryParam("filter") String filter) {
 
         validateSub(sub);
-        return getValuesForSubTreeAsPromString(sub);
+        return getValuesForSubTreeAsPromString(sub, filter);
     }
 
 
@@ -165,21 +166,25 @@ public class MpMetricsWorker {
         return metadata;
     }
 
-    private Map<String, Number> getValuesForSubTreeAsMap(String sub) {
+    private Map<String, Number> getValuesForSubTreeAsMap(String sub, String filter) {
         List<MetadataEntry> metadata = ConfigHolder.getInstance().getConfig().get(sub);
         Map<String,Number> results = new HashMap<>(metadata.size());
 
+        String filterExpression = createFilterExpression(filter);
         for (MetadataEntry entry : metadata) {
             Number value;
             String key = entry.getName();
+            if (!matchesFilter(key,filterExpression)) {
+                continue;
+            }
             try {
-            if (APPLICATION.equals(sub)) {
-                value = applicationMetric.getValue(key);
-            }
-            else {
-                value = getValue(entry.getMbean());
-            }
-            results.put(key, value);
+                if (APPLICATION.equals(sub)) {
+                    value = applicationMetric.getValue(key);
+                }
+                else {
+                    value = getValue(entry.getMbean());
+                }
+                results.put(key, value);
             }
             catch (Exception ex) {
                 System.err.println("Error for " + sub + "/" + entry.getName() + ": " + ex.getMessage() + "\nCause " + ex
@@ -189,12 +194,38 @@ public class MpMetricsWorker {
         return results;
     }
 
-    private String getValuesForSubTreeAsPromString(String sub) {
+    private boolean matchesFilter(String key, String filterExpression) {
+        if (filterExpression==null) {
+            return true;
+        }
+
+        if (filterExpression.startsWith("!")) {
+            filterExpression = filterExpression.substring(1);
+            return !key.matches(filterExpression);
+        }
+
+        return key.matches(filterExpression);
+    }
+
+    private String createFilterExpression(String filter) {
+        if (filter==null || filter.isEmpty()) {
+            return null;
+        }
+        return filter.replaceAll("\\.", "\\\\.").replaceAll("\\*", ".*");
+    }
+
+    private String getValuesForSubTreeAsPromString(String sub, String filter) {
         List<MetadataEntry> metadata = ConfigHolder.getInstance().getConfig().get(sub);
+
+        String filterExpression = createFilterExpression(filter);
 
         StringBuilder builder = new StringBuilder();
         for (MetadataEntry entry : metadata) {
             String key = entry.getName();
+            if (!matchesFilter(key,filterExpression)) {
+                continue;
+            }
+
             String name = sub + ":" + key;
 
             getPromTypeLine(builder, entry, name);
