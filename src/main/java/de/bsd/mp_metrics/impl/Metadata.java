@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Class holding the medatata for base, vendor and applications
+ * Class holding the metadata for base, vendor and applications
  * @author hrupp
  */
 public class Metadata {

@@ -135,35 +135,47 @@ public class MpMetricsWorker {
 
     @OPTIONS
     @Produces("application/json")
-    public Map<String, List<MetadataEntry>> getAllMetadata() {
+    public Map<String, Map<String, MetadataEntry>> getAllMetadata() {
 
-        Map<String, List<MetadataEntry>> results = new HashMap<>(bases.length);
+        Map<String, Map<String,MetadataEntry>> results = new HashMap<>();
         for (String subTree : bases) {
             List<MetadataEntry> metadata = ConfigHolder.getInstance().getConfig().get(subTree);
 
-            results.put(subTree, metadata);
+            results.put(subTree, metadataListToMap(metadata));
         }
         results.put(APPLICATION,getAppMetadata());
         return results;
     }
 
-    private List<MetadataEntry> getAppMetadata() {
-        return applicationMetric.getMetadataList();
+    private Map<String,MetadataEntry> getAppMetadata() {
+        List<MetadataEntry> metadataList = applicationMetric.getMetadataList();
+        return metadataListToMap(metadataList);
+    }
+
+    private Map<String,MetadataEntry> metadataListToMap(List<MetadataEntry> in) {
+        Map<String,MetadataEntry> out = new HashMap<>();
+        for (MetadataEntry me : in) {
+            out.put(me.getName(),me);
+        }
+        return out;
     }
 
     @OPTIONS
     @Path("/{sub}")
     @Produces("application/json")
-    public List<MetadataEntry> getMetadataForSubTree(@PathParam("sub")String sub) {
+    public Map<String, Map<String,MetadataEntry>> getMetadataForSubTree(@PathParam("sub")String sub) {
 
         validateSub(sub);
-        List<MetadataEntry> metadata;
+        Map<String,MetadataEntry> metadata;
         if (APPLICATION.equals(sub)) {
             metadata = getAppMetadata();
         } else {
-            metadata = ConfigHolder.getInstance().getConfig().get(sub);
+            List<MetadataEntry> tmp = ConfigHolder.getInstance().getConfig().get(sub);
+            metadata = metadataListToMap(tmp);
         }
-        return metadata;
+        Map<String,Map<String,MetadataEntry>> out = new HashMap<>(1);
+        out.put(sub,metadata);
+        return out;
     }
 
     private Map<String, Number> getValuesForSubTreeAsMap(String sub, String filter) {

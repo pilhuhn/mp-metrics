@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -300,5 +301,17 @@ public class MetadataEntry {
     sb.append(", tags='").append(tags).append('\'');
     sb.append('}');
     return sb.toString();
+  }
+
+  public Map<String,String> asMap() {
+    Map<String,String> out = new HashMap<>();
+    out.put("name",name); // TODO really needed?
+    out.put("type",type.toString());
+    out.put("unit",unit.toString());
+    out.put("tags",getTagsAsString());
+    out.put("description",description);
+    out.put("displayName",displayName);
+    return out;
+
   }
 }
