@@ -5,11 +5,6 @@ base:
     unit: "none"
     type: "gauge"
     displayName: "Current Thread count"
-  - name: "peakThreadCount"
-    mbean: "java.lang:type=Threading/PeakThreadCount"
-    description: "Max number of threads"
-    unit: "none"
-    type: "gauge"
   - name: "totalStartedThreadCount"
     mbean: "java.lang:type=Threading/TotalStartedThreadCount"
     description: "Number of threads started for this server"
@@ -33,43 +28,43 @@ base:
     mbean: "java.lang:type=Memory/HeapMemoryUsage#committed"
     type: "gauge"
     unit: "byte"
-  - name: daemonThreadCount
+  - name: "daemonThreadCount"
     displayName: Daemon Thread Count
-    type: counter
+    type: gauge
     unit: none
     description: Displays the current number of live daemon threads.
     mbean: java.lang:type=Threading/DaemonThreadCount
-  - name: peakThreadCount
+  - name: "peakThreadCount"
     displayName: Peak Thread Count
     type: counter
     unit: none
     description: Displays the peak live thread count since the Java virtual machine started or peak was reset. This includes daemon and non-daemon threads.
     mbean: java.lang:type=Threading/PeakThreadCount
-  - name: currentLoadedClassCount
+  - name: "currentLoadedClassCount"
     displayName: Current Loaded Class Count
-    type: counter
+    type: gauge
     unit: none
     description: Displays the number of classes that are currently loaded in the Java virtual machine.
     mbean: java.lang:type=ClassLoading/LoadedClassCount
-  - name: totalLoadedClassCount
+  - name: "totalLoadedClassCount"
     displayName: Total Loaded Class Count
     type: counter
     unit: none
     description: Displays the total number of classes that have been loaded since the Java virtual machine has started execution.
     mbean: java.lang:type=ClassLoading/TotalLoadedClassCount
-  - name: totalUnloadedClassCount
+  - name: "totalUnloadedClassCount"
     displayName: Total Unloaded Class Count
     type: counter
     unit: none
     description: Displays the total number of classes unloaded since the Java virtual machine has started execution.
     mbean: java.lang:type=ClassLoading/UnloadedClassCount
-  - name: availableProcessors
+  - name: "availableProcessors"
     displayName: Available Processors
     type: gauge
     unit: none
     description: Displays the number of processors available to the Java virtual machine. This value may change during a particular invocation of the virtual machine.
     mbean: java.lang:type=OperatingSystem/AvailableProcessors
-  - name: systemLoadAverage
+  - name: "systemLoadAverage"
     displayName: System Load Average
     type: gauge
     unit: none
