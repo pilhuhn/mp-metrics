@@ -163,7 +163,7 @@ public class MpMetricsWorker {
     @OPTIONS
     @Path("/{sub}")
     @Produces("application/json")
-    public Map<String, Map<String,MetadataEntry>> getMetadataForSubTree(@PathParam("sub")String sub) {
+    public Map<String,MetadataEntry> getMetadataForSubTree(@PathParam("sub")String sub) {
 
         validateSub(sub);
         Map<String,MetadataEntry> metadata;
@@ -173,9 +173,7 @@ public class MpMetricsWorker {
             List<MetadataEntry> tmp = ConfigHolder.getInstance().getConfig().get(sub);
             metadata = metadataListToMap(tmp);
         }
-        Map<String,Map<String,MetadataEntry>> out = new HashMap<>(1);
-        out.put(sub,metadata);
-        return out;
+        return metadata;
     }
 
     private Map<String, Number> getValuesForSubTreeAsMap(String sub, String filter) {
