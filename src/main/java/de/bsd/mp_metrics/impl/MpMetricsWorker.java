@@ -286,11 +286,13 @@ public class MpMetricsWorker {
      * it is not 'none'
      */
     private String getPrometheusMetricName(MetadataEntry entry, String name) {
-        String out = name.replace('-', '_').replace('.', '_');
+        String out = name.replace('-', '_').replace('.', '_').replace(' ','_');
         out = decamelize(out);
         if (!entry.getUnitRaw().equals(MpMUnit.NONE)) {
             out = out + "_" + MpMUnit.getBaseUnitAsPrometheusString(entry.getUnitRaw());
         }
+        out = out.replace("__","_");
+        out = out.replace(":_",":");
 
         return out;
     }
