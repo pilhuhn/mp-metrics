@@ -16,11 +16,24 @@
  */
 package de.bsd.mp_metrics.impl;
 
+import de.bsd.mp_metrics.MetadataEntry;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.List;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import org.jboss.logging.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.parser.ParserException;
 
@@ -61,6 +74,7 @@ public class ConfigReader {
   public static void main(String... args) {
     if (args.length==0) {
       System.err.println("Please specify a config file");
+      System.err.println("Usage: ConfigReader <config file> [<xml export file>]");
       System.exit(1);
     }
     ConfigReader cr = new ConfigReader();
@@ -68,6 +82,45 @@ public class ConfigReader {
     if (config!=null) {
       System.out.println(config.getBase());
       System.out.println(config.getIntegration());
+    }
+
+    if (args.length==2) {
+      exportToXml(args[1], config);
+    }
+  }
+
+  private static void exportToXml(String xmlOutFile, Metadata metadata) {
+
+    DocumentBuilderFactory factory =
+        DocumentBuilderFactory.newInstance();
+
+    try {
+      File f = new File(xmlOutFile);
+      DocumentBuilder builder =
+          factory.newDocumentBuilder();
+      Document document = builder.newDocument();
+      Element root = document.createElement("config");
+      document.appendChild(root);
+      List<MetadataEntry> entries = metadata.getBase();
+      for (MetadataEntry entry : entries) {
+        Element elem = document.createElement("metric");
+        elem.setAttribute("name",entry.getName());
+        elem.setAttribute("multi",String.valueOf(entry.isMulti()));
+        elem.setAttribute("unit",entry.getUnit());
+        elem.setAttribute("type",entry.getType());
+        root.appendChild(elem);
+
+      }
+      TransformerFactory transformerFactory = TransformerFactory.newInstance();
+      Transformer transformer = transformerFactory.newTransformer();
+      DOMSource source = new DOMSource(document);
+      StreamResult result = new StreamResult(f);
+
+      transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+      transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+      transformer.transform(source, result);
+    } catch (TransformerException | ParserConfigurationException e) {
+      e.printStackTrace();
     }
   }
 }
