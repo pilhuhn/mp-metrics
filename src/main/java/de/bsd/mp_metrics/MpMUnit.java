@@ -53,7 +53,7 @@ public enum MpMUnit {
   /** 1024 {@link #MEGABYTE} */
   GIGABYTE("gbyte", Family.BYTE, 1_024 * 1_024 * 1_024),
 
-  NANOSECOND("ns", Family.TIME, 1d/1_000_000),
+  NANOSECOND("ns", Family.TIME,  1d/1_000_000_000),
   MICROSECOND("us", Family.TIME, 1d/1_000_000),
   MILLISECOND("ms", Family.TIME, 1d/1000),
   SECOND("s", Family.TIME, 1),
@@ -140,7 +140,7 @@ public enum MpMUnit {
       case BIT:  out = "bits"; break;
       case BYTE: out = "bytes"; break;
       case TIME: out = "seconds"; break;
-      case PERCENT: out = "percent"; break;
+      case PERCENT: out = "ratio"; break;
       default:
         out = "";
     }

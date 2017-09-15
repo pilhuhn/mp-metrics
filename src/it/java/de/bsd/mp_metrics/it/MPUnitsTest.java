@@ -49,7 +49,7 @@ public class MPUnitsTest {
   public void testScaleNanosecondsToSeconds() {
     MpMUnit foo = MpMUnit.NANOSECOND;
     double out = MpMUnit.scaleToBase(3, foo);
-    assert out == 0.000_003 : "Out was " + out;
+    assert out == 0.000_000_003 : "Out was " + out;
   }
 
   @Test
